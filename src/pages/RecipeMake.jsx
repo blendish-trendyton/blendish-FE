@@ -26,6 +26,10 @@ const RecipeMaker = () => {
     navigate(`/me`);
   };
 
+  const gowrite = () => {
+    navigate(`/write`);
+  };
+
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   const toggleTooltip = () => {
@@ -135,7 +139,7 @@ const RecipeMaker = () => {
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </R.Home>
-          <R.Write>
+          <R.Write onClick={gowrite}>
             <img
               src={`${process.env.PUBLIC_URL}/images/Write.svg`}
               alt="작성"

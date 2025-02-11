@@ -10,6 +10,7 @@ import EditProf from "./pages/EditProf";
 import EditPW from "./pages/EditPw";
 import Myrecipe from "./pages/Myrecipe";
 import Savedrecipe from "./pages/Savedrecipe";
+import Writerecipe from "./pages/WriteRec";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/editprofile/password" element={<EditPW />} />
         <Route path="/me/myrecipe" element={<Myrecipe />} />
         <Route path="/me/savedrecipe" element={<Savedrecipe />} />
+        <Route path="/write" element={<Writerecipe />} />
       </Routes>
     </BrowserRouter>
   );

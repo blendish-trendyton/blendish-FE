@@ -16,7 +16,7 @@ export const Container = styled.div`
 `;
 
 export const Back = styled.div`
-  width: 396px;
+  width: 393px;
   height: 230px;
   flex-shrink: 0;
   background: #ffe8a2;

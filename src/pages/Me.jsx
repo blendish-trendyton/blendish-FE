@@ -22,6 +22,10 @@ const Me = () => {
   const savedrec = () => {
     navigate(`/me/savedrecipe`);
   };
+
+  const gowrite = () => {
+    navigate(`/write`);
+  };
   return (
     <M.Container>
       <M.Back></M.Back>
@@ -84,7 +88,7 @@ const Me = () => {
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </M.Home>
-          <M.Write>
+          <M.Write onClick={gowrite}>
             <img
               src={`${process.env.PUBLIC_URL}/images/Write.svg`}
               alt="작성"
