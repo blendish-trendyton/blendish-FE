@@ -6,6 +6,10 @@ import RecipeMaker from "./pages/RecipeMake";
 import Customrecipe from "./pages/CustomRec";
 import Recipedet from "./pages/RecipeDet";
 import Me from "./pages/Me";
+import EditProf from "./pages/EditProf";
+import EditPW from "./pages/EditPw";
+import Myrecipe from "./pages/Myrecipe";
+import Savedrecipe from "./pages/Savedrecipe";
 
 function App() {
   return (
@@ -17,6 +21,10 @@ function App() {
         <Route path="/customrecipe" element={<Customrecipe />} />
         <Route path="/recipedet" element={<Recipedet />} />
         <Route path="/me" element={<Me />} />
+        <Route path="/editprofile" element={<EditProf />} />
+        <Route path="/editprofile/password" element={<EditPW />} />
+        <Route path="/me/myrecipe" element={<Myrecipe />} />
+        <Route path="/me/savedrecipe" element={<Savedrecipe />} />
       </Routes>
     </BrowserRouter>
   );

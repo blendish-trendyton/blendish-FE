@@ -181,6 +181,111 @@ export const Myrecipe = styled.div`
   margin-left: 28px;
 `;
 
+export const Myrecs = styled.div`
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 두 개의 열 */
+  gap: 11px 15px; /* [세로 간격] 11px, [가로 간격] 15px */
+  width: fit-content; /* 내용에 맞게 크기 조절 (필요 시 변경 가능) */
+`;
+
+export const Rec1 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+export const Rec2 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+export const Rec3 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+export const Rec4 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+
+export const Hr3 = styled.div`
+  width: 389px;
+  height: 6px;
+  flex-shrink: 0;
+  background: #eee;
+  margin-top: 29px;
+`;
+
+export const Sar = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Savedrecipe = styled.div`
+  margin-top: 30px;
+  color: #000;
+  font-family: "Instrument Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  align-items: center; /* 텍스트 수직 정렬 */
+  align-self: flex-start; /* 상위 flex 정렬에서 벗어나 왼쪽 정렬 */
+  margin-left: 28px;
+`;
+
+export const Savedrecs = styled.div`
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 두 개의 열 */
+  gap: 11px 15px; /* [세로 간격] 11px, [가로 간격] 15px */
+  width: fit-content; /* 내용에 맞게 크기 조절 (필요 시 변경 가능) */
+`;
+
+export const Sar1 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+
+export const Sar2 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+
+export const Sar3 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+
+export const Sar4 = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #d5d5d5;
+`;
+
 export const Nav = styled.div`
   position: fixed; /* 하단에 고정 */
   bottom: 0; /* 화면의 맨 아래로 위치 */
