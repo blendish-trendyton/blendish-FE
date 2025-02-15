@@ -6,6 +6,7 @@
     "cra-template-basic-react": "1.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-image-crop": "^11.0.7",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.0",
