@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as R from "../styles/StyledRM";
-import Dropdown from "./RecipeDrop";
-import TasteDropdown from "./TasteDrop"; // ✅ 공통 드롭다운 컴포넌트 가져오기
+import Dropdown from "./RecipeDrop"; // ✅ 공통 드롭다운 컴포넌트 가져오기
+import TasteDropdown from "./TasteDrop";
 // import axios from "axios";
 
 const RecipeMaker = () => {
@@ -24,6 +24,10 @@ const RecipeMaker = () => {
 
   const gome = () => {
     navigate(`/me`);
+  };
+
+  const gowrite = () => {
+    navigate(`/write`);
   };
 
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
@@ -135,7 +139,7 @@ const RecipeMaker = () => {
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </R.Home>
-          <R.Write>
+          <R.Write onClick={gowrite}>
             <img
               src={`${process.env.PUBLIC_URL}/images/Write.svg`}
               alt="작성"

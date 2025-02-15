@@ -10,6 +10,22 @@ const Me = () => {
   const gomaker = () => {
     navigate(`/recipemaker`);
   };
+
+  const goedit = () => {
+    navigate(`/editprofile`);
+  };
+
+  const gomyrec = () => {
+    navigate(`/me/myrecipe`);
+  };
+
+  const savedrec = () => {
+    navigate(`/me/savedrecipe`);
+  };
+
+  const gowrite = () => {
+    navigate(`/write`);
+  };
   return (
     <M.Container>
       <M.Back></M.Back>
@@ -27,14 +43,30 @@ const Me = () => {
             <div id="livec">미국</div>
           </M.Live>
         </M.Country>
-        <M.Edit>
+        <M.Edit onClick={goedit}>
           <div>내 정보 수정</div>
         </M.Edit>
       </M.Info>
       <M.Hr1></M.Hr1>
       <M.Myr>
         <M.Myrecipe>나의 레시피</M.Myrecipe>
+        <M.Myrecs>
+          <M.Rec1></M.Rec1>
+          <M.Rec2></M.Rec2>
+          <M.Rec3></M.Rec3>
+          <M.Rec4 onClick={gomyrec}></M.Rec4>
+        </M.Myrecs>
       </M.Myr>
+      <M.Hr3 />
+      <M.Sar>
+        <M.Savedrecipe>저장된 레시피</M.Savedrecipe>
+        <M.Savedrecs>
+          <M.Sar1></M.Sar1>
+          <M.Sar2></M.Sar2>
+          <M.Sar3></M.Sar3>
+          <M.Sar4 onClick={savedrec}></M.Sar4>
+        </M.Savedrecs>
+      </M.Sar>
       <M.Nav>
         <M.Hr />
         <M.Item>
@@ -56,7 +88,7 @@ const Me = () => {
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </M.Home>
-          <M.Write>
+          <M.Write onClick={gowrite}>
             <img
               src={`${process.env.PUBLIC_URL}/images/Write.svg`}
               alt="작성"
