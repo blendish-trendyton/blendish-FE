@@ -15,36 +15,40 @@ export const Container = styled.div`
 `;
 
 export const TodayR = styled.div`
-  img {
+  margin: auto;
+  .mainLogo {
     position: absolute;
     top: 20px;
     left: 20px;
   }
   h4 {
     font-size: 16px;
-    position: absolute;
-    left: 30px;
-    top: 80px;
+    text-align: left;
+    margin: 20px 0;
   }
   .todayR {
     display: flex;
     justify-content: space-around;
     gap: 10px;
-    margin-top: 120px;
-    div {
-      box-sizing: border-box;
-      width: 79px;
-      height: 79px;
-      border-radius: 5px;
-      background-color: #ededed;
-    }
-    span {
-      font-size: 10px;
-    }
+  }
+  .recipe-box {
+    width: 79px;
+    height: 79px;
+    border-radius: 5px;
+    background-color: #ededed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  span {
+    font-size: 10px;
+    text-align: center;
   }
 `;
 
 export const Famous = styled.div`
+  display: block;
+
   h4 {
     font-size: 16px;
     position: absolute;
@@ -55,16 +59,12 @@ export const Famous = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 120px;
-
-    div {
-      box-sizing: border-box;
+    margin-bottom: 40px;
+    img {
       width: 160px;
       height: 160px;
       border-radius: 5px;
-      background-color: #ededed;
     }
-
     p {
       font-size: 14px;
       margin: 10px 0 0 0;
@@ -74,18 +74,19 @@ export const Famous = styled.div`
   }
 `;
 
-export const Reaction = styled.p`
+export const Reaction = styled.div`
   display: flex;
   align-items: center;
   img {
-    width: 14px;
-    height: 14px;
+    width: 14px !important;
+    height: 14px !important;
     margin: 0 5px;
   }
   span {
     margin: 0 10px 0 0;
   }
 `;
+
 export const Nav = styled.div`
   position: fixed; /* 하단에 고정 */
   bottom: 0; /* 화면의 맨 아래로 위치 */

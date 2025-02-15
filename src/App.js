@@ -18,12 +18,14 @@ import SearchBB from "./pages/SearchBB";
 import EditBB from "./pages/EditBB";
 import SignUp from "./pages/SignUp";
 import SelectPage from "./pages/SelectPage";
+import FoodDetail from "./pages/FoodDetail";
 function App() {
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/foodDetail" element={<FoodDetail />} />
         <Route path="/logins" element={<Logins />} />
         <Route path="/login" element={<Login />} />
         <Route path="/searchID" element={<SearchID />} />
