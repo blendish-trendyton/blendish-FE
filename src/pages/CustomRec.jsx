@@ -14,21 +14,15 @@ const Customrecipe = () => {
   const gorec = () => {
     navigate(`/recipedet`);
   };
+  const goHome = () => {
+    navigate(`/`);
+  };
 
   return (
     <C.Container>
       <C.Nav>
-        <img
-          id="back"
-          src={`${process.env.PUBLIC_URL}/images/Goback.svg`}
-          alt="뒤로가기기"
-          onClick={goback}
-        />
-        <img
-          id="home"
-          src={`${process.env.PUBLIC_URL}/images/Gohome.svg`}
-          alt="홈"
-        />
+        <img id="back" src={`${process.env.PUBLIC_URL}/images/Goback.svg`} alt="뒤로가기기" onClick={goback} />
+        <img onClick={goHome} id="home" src={`${process.env.PUBLIC_URL}/images/Gohome.svg`} alt="홈" />
       </C.Nav>
       <C.Title>커스텀 레시피</C.Title>
       <C.Hash>
@@ -45,10 +39,7 @@ const Customrecipe = () => {
         <C.List>
           <C.Recipe>
             <div id="title">블루베리 베이글</div>
-            <div id="content">
-              고기를 얇게 저민 후 양념을 바로 묻힌 뒤 숯불 위에 석쇠를 올리고
-              고기를 얹어서 볶듯이 뒤집어서 굽는다.
-            </div>
+            <div id="content">고기를 얇게 저민 후 양념을 바로 묻힌 뒤 숯불 위에 석쇠를 올리고 고기를 얹어서 볶듯이 뒤집어서 굽는다.</div>
             <C.Gorecipe onClick={gorec}>
               <div>레시피 보기</div>
             </C.Gorecipe>

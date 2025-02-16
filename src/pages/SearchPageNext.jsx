@@ -17,7 +17,7 @@ const RecipeMore = () => {
   const gome = () => navigate(`/me`);
   const gowrite = () => navigate(`/write`);
   const goSearch = () => navigate(`/searchPageNext`);
-
+  const goMaker = () => navigate(`/recipemaker`);
   //  검색 기록 상태
   const [searchHistory, setSearchHistory] = useState(["불고기", "김치볶음밥", "타코불고기"]);
 
@@ -107,7 +107,7 @@ const RecipeMore = () => {
       <M.Nav>
         <M.Hr />
         <M.Item>
-          <M.Maker>
+          <M.Maker onClick={goMaker}>
             <img src={makerThin} alt="메이커" />
             <div>메이커</div>
           </M.Maker>

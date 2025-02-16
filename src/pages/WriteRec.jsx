@@ -14,9 +14,7 @@ const Writerecipe = () => {
   const [selectedSpicy, setSelectedSpicy] = useState("매운 맛 정도");
 
   // ✅ "필요 재료" 배열 상태 관리
-  const [ingredients, setIngredients] = useState([
-    { id: 1, name: "", quantity: "" },
-  ]);
+  const [ingredients, setIngredients] = useState([{ id: 1, name: "", quantity: "" }]);
 
   // ✅ 조리 단계별 이미지 배열 상태 (기존 steps 유지)
   const [steps, setSteps] = useState([{ id: 1, description: "", image: null }]);
@@ -25,10 +23,7 @@ const Writerecipe = () => {
 
   // ✅ "필요 재료 추가" 버튼 클릭 시 새로운 재료 추가
   const addIngredient = () => {
-    setIngredients([
-      ...ingredients,
-      { id: ingredients.length + 1, name: "", quantity: "" },
-    ]);
+    setIngredients([...ingredients, { id: ingredients.length + 1, name: "", quantity: "" }]);
   };
 
   // ✅ 대표 이미지 상태
@@ -54,10 +49,7 @@ const Writerecipe = () => {
 
   // ✅ 조리 단계 추가 함수 (이미지 필드 포함)
   const addStep = () => {
-    setSteps([
-      ...steps,
-      { id: steps.length + 1, description: "", image: null },
-    ]);
+    setSteps([...steps, { id: steps.length + 1, description: "", image: null }]);
   };
 
   // ✅ 레시피 설명 상태 (줄바꿈 가능 & 글자 수 카운트)
@@ -76,9 +68,14 @@ const Writerecipe = () => {
     navigate(`/me`);
   };
 
+  const goHome = () => {
+    navigate(`/`);
+  };
+
   const gomaker = () => {
     navigate(`/recipemaker`);
   };
+  const goSearch = () => navigate(`/searchPageNext`);
   return (
     <W.Container>
       <W.Title>
@@ -89,24 +86,9 @@ const Writerecipe = () => {
       <W.Rep>
         <W.Img className={mainImage ? "uploaded" : ""}>
           <label htmlFor="mainImageUpload">
-            <input
-              id="mainImageUpload"
-              type="file"
-              accept="image/*"
-              onChange={handleMainImageUpload}
-            />
-            <img
-              className="upload-icon"
-              src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
-              alt="업로드"
-            />
-            {mainImage && (
-              <img
-                className="uploaded-image"
-                src={mainImage}
-                alt="대표 이미지"
-              />
-            )}
+            <input id="mainImageUpload" type="file" accept="image/*" onChange={handleMainImageUpload} />
+            <img className="upload-icon" src={`${process.env.PUBLIC_URL}/images/Upload.svg`} alt="업로드" />
+            {mainImage && <img className="uploaded-image" src={mainImage} alt="대표 이미지" />}
             <div>대표 이미지 업로드</div>
           </label>
         </W.Img>
@@ -136,29 +118,14 @@ const Writerecipe = () => {
           </W.Level>
           <W.Taste>
             <WriteTasteDropdown
-              options={[
-                "단 맛",
-                "짠 맛",
-                "신 맛",
-                "감칠 맛",
-                "기름진 맛",
-                "담백한 맛",
-                "매운 맛",
-              ]}
+              options={["단 맛", "짠 맛", "신 맛", "감칠 맛", "기름진 맛", "담백한 맛", "매운 맛"]}
               selected={selectedTaste}
               setSelected={setSelectedTaste}
             />
           </W.Taste>
           <W.Spicy>
             <WriteDropdown
-              options={[
-                "선호하지 않음",
-                "🌶️",
-                "🌶️🌶️",
-                "🌶️🌶️🌶️",
-                "🌶️🌶️🌶️🌶️",
-                "🌶️🌶️🌶️🌶️🌶️",
-              ]}
+              options={["선호하지 않음", "🌶️", "🌶️🌶️", "🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️🌶️"]}
               selected={selectedSpicy}
               setSelected={setSelectedSpicy}
               multiple={false} // 단일 선택
@@ -169,11 +136,7 @@ const Writerecipe = () => {
           <W.Det>
             <div>레시피 설명</div>
             <W.Recipe>
-              <textarea
-                placeholder="레시피에 대한 간단한 설명을 작성 해주세요."
-                value={recipeText}
-                onChange={handleTextChange}
-              />
+              <textarea placeholder="레시피에 대한 간단한 설명을 작성 해주세요." value={recipeText} onChange={handleTextChange} />
               <div className="char-count">{recipeText.length} / 200</div>
             </W.Recipe>
           </W.Det>
@@ -235,24 +198,9 @@ const Writerecipe = () => {
               {/* 🔹 조리 과정별 이미지 업로드 */}
               <W.Upload className={step.image ? "uploaded" : ""}>
                 <label htmlFor={`stepImageUpload-${index}`}>
-                  <input
-                    id={`stepImageUpload-${index}`}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleStepImageUpload(e, index)}
-                  />
-                  <img
-                    className="upload-icon"
-                    src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
-                    alt="업로드"
-                  />
-                  {step.image && (
-                    <img
-                      className="uploaded-image"
-                      src={step.image}
-                      alt={`조리 단계 ${index + 1}`}
-                    />
-                  )}
+                  <input id={`stepImageUpload-${index}`} type="file" accept="image/*" onChange={(e) => handleStepImageUpload(e, index)} />
+                  <img className="upload-icon" src={`${process.env.PUBLIC_URL}/images/Upload.svg`} alt="업로드" />
+                  {step.image && <img className="uploaded-image" src={step.image} alt={`조리 단계 ${index + 1}`} />}
                   <div>조리 이미지 업로드</div>
                 </label>
               </W.Upload>
@@ -286,28 +234,19 @@ const Writerecipe = () => {
         <W.Hr />
         <W.Item>
           <W.Maker onClick={gomaker}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Maker.svg`}
-              alt="메이커"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Maker.svg`} alt="메이커" />
             <div>메이커</div>
           </W.Maker>
-          <W.Search>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Search.svg`}
-              alt="검색"
-            />
+          <W.Search onClick={goSearch}>
+            <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </W.Search>
-          <W.Home>
+          <W.Home onClick={goHome}>
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </W.Home>
           <W.Write>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/WriteY.svg`}
-              alt="작성"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/WriteY.svg`} alt="작성" />
             <div>작성</div>
           </W.Write>
           <W.Me onClick={gome}>

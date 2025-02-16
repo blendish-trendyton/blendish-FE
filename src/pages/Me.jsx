@@ -26,6 +26,12 @@ const Me = () => {
   const gowrite = () => {
     navigate(`/write`);
   };
+  const goHome = () => {
+    navigate(`/`);
+  };
+  const goSearch = () => {
+    navigate(`/searchPage`);
+  };
   return (
     <M.Container>
       <M.Back></M.Back>
@@ -54,10 +60,7 @@ const Me = () => {
           <M.Rec1></M.Rec1>
           <M.Rec2></M.Rec2>
           <M.Rec3></M.Rec3>
-          <M.Rec4
-            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
-            onClick={gomyrec}
-          >
+          <M.Rec4 image={`${process.env.PUBLIC_URL}/images/Food.svg`} onClick={gomyrec}>
             <span>더보기 ></span>
           </M.Rec4>
         </M.Myrecs>
@@ -69,10 +72,7 @@ const Me = () => {
           <M.Sar1></M.Sar1>
           <M.Sar2></M.Sar2>
           <M.Sar3></M.Sar3>
-          <M.Sar4
-            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
-            onClick={savedrec}
-          >
+          <M.Sar4 image={`${process.env.PUBLIC_URL}/images/Food.svg`} onClick={savedrec}>
             <span>더보기 ></span>
           </M.Sar4>
         </M.Savedrecs>
@@ -81,28 +81,19 @@ const Me = () => {
         <M.Hr />
         <M.Item>
           <M.Maker onClick={gomaker}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Maker.svg`}
-              alt="메이커"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Maker.svg`} alt="메이커" />
             <div>메이커</div>
           </M.Maker>
-          <M.Search>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Search.svg`}
-              alt="검색"
-            />
+          <M.Search onClick={goSearch}>
+            <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </M.Search>
-          <M.Home>
+          <M.Home onClick={goHome}>
             <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
             <div>홈</div>
           </M.Home>
           <M.Write onClick={gowrite}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Write.svg`}
-              alt="작성"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Write.svg`} alt="작성" />
             <div>작성</div>
           </M.Write>
           <M.Me>

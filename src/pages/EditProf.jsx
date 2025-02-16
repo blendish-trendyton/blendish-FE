@@ -8,11 +8,8 @@ import EditTasteDropdown from "./EditTasteDropdown";
 
 const EditProf = () => {
   const [selectedTaste, setSelectedTaste] = useState("");
-  const [selectedSpicy, setSelectedSpicy] =
-    useState("매운 맛 정도를 선택하세요.");
-  const [profileImage, setProfileImage] = useState(
-    `${process.env.PUBLIC_URL}/images/Profile.svg`
-  ); // 초기 프로필 이미지
+  const [selectedSpicy, setSelectedSpicy] = useState("매운 맛 정도를 선택하세요.");
+  const [profileImage, setProfileImage] = useState(`${process.env.PUBLIC_URL}/images/Profile.svg`); // 초기 프로필 이미지
 
   const navigate = useNavigate();
 
@@ -24,6 +21,9 @@ const EditProf = () => {
     navigate(`/editprofile/password`);
   };
 
+  const goHome = () => {
+    navigate(`/`);
+  };
   // 🔹 프로필 이미지 변경 함수
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -36,17 +36,8 @@ const EditProf = () => {
   return (
     <E.Container>
       <E.Nav>
-        <img
-          id="back"
-          src={`${process.env.PUBLIC_URL}/images/Goback.svg`}
-          alt="뒤로가기기"
-          onClick={goback}
-        />
-        <img
-          id="home"
-          src={`${process.env.PUBLIC_URL}/images/Gohome.svg`}
-          alt="홈"
-        />
+        <img id="back" src={`${process.env.PUBLIC_URL}/images/Goback.svg`} alt="뒤로가기기" onClick={goback} />
+        <img id="home" src={`${process.env.PUBLIC_URL}/images/Gohome.svg`} alt="홈" onClick={goHome} />
       </E.Nav>
       <E.Title>
         <div>내 정보 수정</div>
@@ -56,11 +47,7 @@ const EditProf = () => {
       <E.Img>
         <img id="profile" src={profileImage} alt="프로필" />
         <label htmlFor="fileUpload">
-          <img
-            id="edit"
-            src={`${process.env.PUBLIC_URL}/images/Edit.svg`}
-            alt="수정"
-          />
+          <img id="edit" src={`${process.env.PUBLIC_URL}/images/Edit.svg`} alt="수정" />
         </label>
         <input
           id="fileUpload"
@@ -98,15 +85,7 @@ const EditProf = () => {
           <div>맛 취향</div>
           <E.Tastebox>
             <EditTasteDropdown
-              options={[
-                "단 맛",
-                "짠 맛",
-                "신 맛",
-                "감칠 맛",
-                "기름진 맛",
-                "담백한 맛",
-                "매운 맛",
-              ]}
+              options={["단 맛", "짠 맛", "신 맛", "감칠 맛", "기름진 맛", "담백한 맛", "매운 맛"]}
               selected={selectedTaste}
               setSelected={setSelectedTaste}
             />
@@ -116,14 +95,7 @@ const EditProf = () => {
           <div>매운 맛 정도</div>
           <E.Spicybox>
             <EditDropdown
-              options={[
-                "선호하지 않음",
-                "🌶️",
-                "🌶️🌶️",
-                "🌶️🌶️🌶️",
-                "🌶️🌶️🌶️🌶️",
-                "🌶️🌶️🌶️🌶️🌶️",
-              ]}
+              options={["선호하지 않음", "🌶️", "🌶️🌶️", "🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️🌶️"]}
               selected={selectedSpicy}
               setSelected={setSelectedSpicy}
               multiple={false} // 단일 선택

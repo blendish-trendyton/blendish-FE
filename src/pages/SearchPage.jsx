@@ -30,7 +30,9 @@ const RecipeMore = () => {
   const goSearch = () => {
     navigate(`/searchPageNext`);
   };
-
+  const goMaker = () => {
+    navigate(`/recipemaker`);
+  };
   return (
     <S.Container>
       <S.Search>
@@ -76,7 +78,7 @@ const RecipeMore = () => {
       <M.Nav>
         <M.Hr />
         <M.Item>
-          <M.Maker>
+          <M.Maker onClick={goMaker}>
             <img src={makerThin} alt="메이커" />
             <div>메이커</div>
           </M.Maker>
