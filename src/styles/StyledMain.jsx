@@ -12,6 +12,13 @@ export const Container = styled.div`
   box-sizing: border-box;
   background: #fff;
   width: 393px;
+  .startPage {
+    width: 100%;
+    background-color: #ffb627;
+    .logo {
+      margin-top: 350px;
+    }
+  }
 `;
 
 export const TodayR = styled.div`

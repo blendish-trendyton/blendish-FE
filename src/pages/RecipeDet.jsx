@@ -16,31 +16,19 @@ const Recipedet = () => {
   const goback = () => {
     navigate(-1);
   };
+  const goHome = () => {
+    navigate(`/`);
+  };
 
   return (
     <R.Container>
       <R.Nav>
-        <img
-          id="back"
-          src={`${process.env.PUBLIC_URL}/images/Goback.svg`}
-          alt="뒤로가기기"
-          onClick={goback}
-        />
-        <img
-          id="home"
-          src={`${process.env.PUBLIC_URL}/images/Gohome.svg`}
-          alt="홈"
-        />
+        <img id="back" src={`${process.env.PUBLIC_URL}/images/Goback.svg`} alt="뒤로가기기" onClick={goback} />
+        <img id="home" src={`${process.env.PUBLIC_URL}/images/Gohome.svg`} alt="홈" onClick={goHome} />
       </R.Nav>
       <R.Title>
         <div>블루베리 식빵</div>
-        <img
-          src={`${process.env.PUBLIC_URL}/images/${
-            isActive ? "BookmarkY.svg" : "Bookmark.svg"
-          }`}
-          alt="북마크"
-          onClick={toggleBookmark}
-        />
+        <img src={`${process.env.PUBLIC_URL}/images/${isActive ? "BookmarkY.svg" : "Bookmark.svg"}`} alt="북마크" onClick={toggleBookmark} />
       </R.Title>
       <R.Hr />
       <R.Ing>
