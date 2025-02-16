@@ -144,6 +144,7 @@ export const Name = styled.div`
     font-weight: 600;
     line-height: normal;
     border: none;
+    padding: 12px;
 
     &:focus {
       border: none;
