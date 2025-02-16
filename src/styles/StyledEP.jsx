@@ -47,14 +47,29 @@ export const Img = styled.div`
   height: 89px;
   flex-shrink: 0;
   margin-top: 40px;
-  justify-content: end;
+  // justify-content: end;
   align-items: start;
+  display: flex;
 
-  img {
+  #profile {
     margin-left: 25px;
     width: 89px;
     height: 89px;
     flex-shrink: 0;
+    border-radius: 50%; /* 원형 프로필 */
+    object-fit: cover; /* 이미지 비율 유지 + 중앙 크롭 */
+  }
+
+  #edit {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    top: 202px; /* 프로필 이미지 내부에서 아래쪽으로 조금 띄움 */
+    left: 85px; /* 오른쪽으로 조금 띄움 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

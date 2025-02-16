@@ -91,7 +91,7 @@ const DropdownHeader = styled.div`
   background-color: ${(props) => (props.isOpen ? "#fffbe6" : "#ffffff")};
   cursor: pointer;
   font-size: 16px;
-  color: #333;
+  color: #8d8d8d;
   font-weight: 500;
   //   border: 1.5px solid #d6d3d3;
   //   border-radius: 5px;
