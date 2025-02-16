@@ -10,6 +10,10 @@ const EditProf = () => {
   const [selectedTaste, setSelectedTaste] = useState("");
   const [selectedSpicy, setSelectedSpicy] =
     useState("매운 맛 정도를 선택하세요.");
+  const [profileImage, setProfileImage] = useState(
+    `${process.env.PUBLIC_URL}/images/Profile.svg`
+  ); // 초기 프로필 이미지
+
   const navigate = useNavigate();
 
   const goback = () => {
@@ -19,6 +23,16 @@ const EditProf = () => {
   const gopsedit = () => {
     navigate(`/editprofile/password`);
   };
+
+  // 🔹 프로필 이미지 변경 함수
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // 이미지 URL 생성
+      setProfileImage(imageUrl); // 프로필 이미지 변경
+    }
+  };
+
   return (
     <E.Container>
       <E.Nav>
@@ -37,13 +51,26 @@ const EditProf = () => {
       <E.Title>
         <div>내 정보 수정</div>
       </E.Title>
+
+      {/* 🔹 프로필 이미지 변경 UI */}
       <E.Img>
-        <img
-          id="profile"
-          src={`${process.env.PUBLIC_URL}/images/Profile.svg`}
-          alt="프로필"
+        <img id="profile" src={profileImage} alt="프로필" />
+        <label htmlFor="fileUpload">
+          <img
+            id="edit"
+            src={`${process.env.PUBLIC_URL}/images/Edit.svg`}
+            alt="수정"
+          />
+        </label>
+        <input
+          id="fileUpload"
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleImageUpload} // 이미지 업로드 이벤트
         />
       </E.Img>
+
       <E.Box>
         <E.Id>
           <div>아이디</div>

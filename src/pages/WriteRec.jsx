@@ -18,8 +18,8 @@ const Writerecipe = () => {
     { id: 1, name: "", quantity: "" },
   ]);
 
-  // ✅ "조리 단계" 배열 상태 관리
-  const [steps, setSteps] = useState([{ id: 1, description: "" }]);
+  // ✅ 조리 단계별 이미지 배열 상태 (기존 steps 유지)
+  const [steps, setSteps] = useState([{ id: 1, description: "", image: null }]);
 
   const navigate = useNavigate();
 
@@ -31,9 +31,45 @@ const Writerecipe = () => {
     ]);
   };
 
-  // ✅ "조리 단계 추가" 버튼 클릭 시 새로운 조리 단계 추가
+  // ✅ 대표 이미지 상태
+  const [mainImage, setMainImage] = useState(null);
+
+  // ✅ 대표 이미지 업로드 함수
+  const handleMainImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setMainImage(URL.createObjectURL(file));
+    }
+  };
+
+  // ✅ 조리 단계 이미지 업로드 함수
+  const handleStepImageUpload = (event, index) => {
+    const file = event.target.files[0];
+    if (file) {
+      const newSteps = [...steps];
+      newSteps[index].image = URL.createObjectURL(file);
+      setSteps(newSteps);
+    }
+  };
+
+  // ✅ 조리 단계 추가 함수 (이미지 필드 포함)
   const addStep = () => {
-    setSteps([...steps, { id: steps.length + 1, description: "" }]);
+    setSteps([
+      ...steps,
+      { id: steps.length + 1, description: "", image: null },
+    ]);
+  };
+
+  // ✅ 레시피 설명 상태 (줄바꿈 가능 & 글자 수 카운트)
+  const [recipeText, setRecipeText] = useState("");
+
+  // 🔹 글자 입력 처리 함수
+  const handleTextChange = (event) => {
+    const inputText = event.target.value;
+
+    if (inputText.length <= 200) {
+      setRecipeText(inputText); // 200자까지만 저장
+    }
   };
 
   const gome = () => {
@@ -48,15 +84,34 @@ const Writerecipe = () => {
       <W.Title>
         <div id="name">레시피 작성</div>
       </W.Title>
+
+      {/* 🔹 대표 이미지 업로드 */}
       <W.Rep>
-        <W.Img>
-          <img
-            src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
-            alt="업로드"
-          />
-          <div>대표 이미지 업로드</div>
+        <W.Img className={mainImage ? "uploaded" : ""}>
+          <label htmlFor="mainImageUpload">
+            <input
+              id="mainImageUpload"
+              type="file"
+              accept="image/*"
+              onChange={handleMainImageUpload}
+            />
+            <img
+              className="upload-icon"
+              src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
+              alt="업로드"
+            />
+            {mainImage && (
+              <img
+                className="uploaded-image"
+                src={mainImage}
+                alt="대표 이미지"
+              />
+            )}
+            <div>대표 이미지 업로드</div>
+          </label>
         </W.Img>
       </W.Rep>
+
       <W.Input>
         <W.Select>
           <W.Name>
@@ -113,16 +168,23 @@ const Writerecipe = () => {
         <W.Expl>
           <W.Det>
             <div>레시피 설명</div>
-            <input
-              type="text"
-              placeholder="레시피에 대한 간단한 설명을 작성 해주세요."
-            />
+            <W.Recipe>
+              <textarea
+                placeholder="레시피에 대한 간단한 설명을 작성 해주세요."
+                value={recipeText}
+                onChange={handleTextChange}
+              />
+              <div className="char-count">{recipeText.length} / 200</div>
+            </W.Recipe>
           </W.Det>
         </W.Expl>
         <W.Hr1></W.Hr1>
         <W.Ing>
           <W.IngT>
-            <div>필요 재료</div>
+            <div id="title">필요 재료</div>
+            <div id="first">( </div>
+            <input id="number" type="text" />
+            <div id="last">인분 )</div>
           </W.IngT>
           <W.Inghr />
 
@@ -169,13 +231,33 @@ const Writerecipe = () => {
           {steps.map((step, index) => (
             <W.MDet key={step.id}>
               <W.No>{index + 1}</W.No>
-              <W.Upload>
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
-                  alt="업로드"
-                />
-                <div>조리 이미지 업로드</div>
+
+              {/* 🔹 조리 과정별 이미지 업로드 */}
+              <W.Upload className={step.image ? "uploaded" : ""}>
+                <label htmlFor={`stepImageUpload-${index}`}>
+                  <input
+                    id={`stepImageUpload-${index}`}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleStepImageUpload(e, index)}
+                  />
+                  <img
+                    className="upload-icon"
+                    src={`${process.env.PUBLIC_URL}/images/Upload.svg`}
+                    alt="업로드"
+                  />
+                  {step.image && (
+                    <img
+                      className="uploaded-image"
+                      src={step.image}
+                      alt={`조리 단계 ${index + 1}`}
+                    />
+                  )}
+                  <div>조리 이미지 업로드</div>
+                </label>
               </W.Upload>
+
+              {/* 🔹 조리 단계 설명 */}
               <input
                 type="text"
                 placeholder="상세 설명 입력"

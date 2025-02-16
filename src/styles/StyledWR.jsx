@@ -44,6 +44,7 @@ export const Rep = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 17px;
 `;
 
 export const Img = styled.div`
@@ -56,23 +57,64 @@ export const Img = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 17px;
+  position: relative;
+  overflow: hidden;
 
-  img {
+  label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+  }
+
+  input {
+    display: none; /* 기본 파일 선택 버튼 숨기기 */
+  }
+
+  /* 기본 아이콘 */
+  .upload-icon {
     width: 41px;
     height: 41px;
     flex-shrink: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  /* 업로드된 이미지 */
+  .uploaded-image {
+    width: 100%; /* 부모(Img) 크기에 맞게 설정 */
+    height: 100%;
+    object-fit: cover; /* 비율 유지하면서 꽉 차게 설정 */
+    border-radius: 10px;
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    z-index: 3;
+  }
+
+  /* 업로드된 이미지가 있을 경우 표시 */
+  &.uploaded label .uploaded-image {
+    display: block;
+  }
+
+  /* 업로드된 이미지가 있으면 아이콘 숨김 */
+  &.uploaded label .upload-icon {
+    display: none;
   }
 
   div {
+    position: absolute;
+    bottom: 60px;
     color: #5d5d5d;
     text-align: center;
     font-family: "Instrument Sans";
     font-size: 15px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    z-index: 1;
   }
 `;
 
@@ -162,34 +204,49 @@ export const Det = styled.div`
     font-weight: 600;
     line-height: normal;
   }
+`;
+export const Recipe = styled.div`
+  width: 348px;
+  height: 130px; /* 글자 수 표시 영역 추가로 height 조정 */
+  flex-shrink: 0;
+  margin-top: 10px;
+  border-radius: 5px;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
 
-  input {
-    width: 348px;
-    height: 110px;
-    flex-shrink: 0;
-    border-radius: 5px;
-    background: #f2f2f2;
-    margin-top: 10px;
+  textarea {
+    width: 100%;
+    height: 90px; /* 입력 가능 높이 */
+    background: transparent;
     border: none;
     color: #4b4b4b;
-    text-align: left; /* 텍스트 오른쪽 정렬 */
+    text-align: left;
     font-family: "Instrument Sans";
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    padding: 12px 10px; /* 위아래 12px, 양옆 10px */
+    padding: 10px;
+    resize: none; /* 사용자가 크기 조절하지 못하도록 설정 */
 
-    /* Placeholder 스타일 */
     &::placeholder {
-      text-align: left; /* Placeholder는 왼쪽 정렬 */
-      color: ##8d8d8d; /* 연한 회색 (선택 사항) */
+      text-align: left;
+      color: #8d8d8d;
     }
 
     &:focus {
-      border: none;
       outline: none;
     }
+  }
+
+  /* 🔹 글자 수 표시 스타일 */
+  .char-count {
+    font-size: 10px;
+    color: #8d8d8d;
+    text-align: right;
   }
 `;
 
@@ -220,14 +277,51 @@ export const Ing = styled.div`
 export const IngT = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: end;
 
-  div {
+  #title {
     color: #1f1f1f;
     font-family: "Instrument Sans";
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: 24px; /* 150% */
+  }
+
+  #number {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    border: none;
+    border-radius: 2px;
+    background: #d9d9d9;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  #first {
+    margin-left: 8px;
+    color: #1f1f1f;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  #last {
+    color: #1f1f1f;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
   }
 `;
 
@@ -265,18 +359,22 @@ export const Ingredient = styled.div`
 
   #name {
     width: 200px;
-    color: black;
+    color: #1f1f1f;
     font-family: "Instrument Sans";
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
     line-height: 24px; /* 171.429% */
     border: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   #quantity {
     width: 130px;
-    color: black;
+    color: #1f1f1f;
     font-family: "Instrument Sans";
     font-size: 14px;
     font-style: normal;
@@ -284,6 +382,10 @@ export const Ingredient = styled.div`
     line-height: 24px; /* 171.429% */
     border: none;
     text-align: right;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   input::placeholder {
@@ -352,9 +454,13 @@ export const MDet = styled.div`
   flex-direction: column;
 
   input {
-    margin-top: 13px;
+    margin-top: 20px;
     margin-bottom: 6px;
     border: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   #hr {
@@ -368,6 +474,7 @@ export const MDet = styled.div`
 export const No = styled.div`
   margin-top: 25px;
   width: 25px;
+  margin-bottom: 17px;
   height: 25px;
   flex-shrink: 0;
   border-radius: 5px;
@@ -384,32 +491,73 @@ export const No = styled.div`
 `;
 
 export const Upload = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 346px;
   height: 335px;
   flex-shrink: 0;
   border-radius: 10px;
   background: #eee;
-  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 
-  img {
+  label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+  }
+
+  input {
+    display: none;
+  }
+
+  /* 기본 아이콘 */
+  .upload-icon {
     width: 41px;
     height: 41px;
     flex-shrink: 0;
+    position: absolute;
+    z-index: 2;
+  }
+
+  /* 업로드된 이미지 */
+  .uploaded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    z-index: 3;
+  }
+
+  /* 업로드된 이미지가 있을 경우 표시 */
+  &.uploaded label .uploaded-image {
+    display: block;
+  }
+
+  /* 업로드된 이미지가 있으면 아이콘 숨김 */
+  &.uploaded label .upload-icon {
+    display: none;
   }
 
   div {
+    position: absolute;
+    bottom: 108px;
     color: #5d5d5d;
     text-align: center;
     font-family: "Instrument Sans";
     font-size: 15px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
-    margin-top: 10px;
+    z-index: 1;
   }
 `;
 

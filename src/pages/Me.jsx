@@ -54,7 +54,12 @@ const Me = () => {
           <M.Rec1></M.Rec1>
           <M.Rec2></M.Rec2>
           <M.Rec3></M.Rec3>
-          <M.Rec4 onClick={gomyrec}></M.Rec4>
+          <M.Rec4
+            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
+            onClick={gomyrec}
+          >
+            <span>더보기 ></span>
+          </M.Rec4>
         </M.Myrecs>
       </M.Myr>
       <M.Hr3 />
@@ -64,7 +69,12 @@ const Me = () => {
           <M.Sar1></M.Sar1>
           <M.Sar2></M.Sar2>
           <M.Sar3></M.Sar3>
-          <M.Sar4 onClick={savedrec}></M.Sar4>
+          <M.Sar4
+            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
+            onClick={savedrec}
+          >
+            <span>더보기 ></span>
+          </M.Sar4>
         </M.Savedrecs>
       </M.Sar>
       <M.Nav>
