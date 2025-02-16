@@ -32,11 +32,14 @@ const FoodDetail = () => {
     navigate(-1);
   };
   const goRecipe = () => {
-    navigate(`RecipeMore`);
+    navigate(`/recipeMore`);
   };
 
   const goComment = () => {
-    navigate(`CommentMore`);
+    navigate(`/commentMore`);
+  };
+  const goSearch = () => {
+    navigate(`/SearchPage`);
   };
 
   //  하트 on/off
@@ -124,7 +127,7 @@ const FoodDetail = () => {
             <img src={`${process.env.PUBLIC_URL}/images/MakerY.svg`} alt="메이커" />
             <div>메이커</div>
           </F.Maker>
-          <F.Search>
+          <F.Search onClick={goSearch}>
             <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </F.Search>

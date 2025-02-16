@@ -7,7 +7,7 @@ export const Container = styled.div`
   text-align: center; /* 가로 중앙 정렬 */
   position: relative;
   margin: 0 auto;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   padding: 0;
   box-sizing: border-box;
   background: #fff;
@@ -71,6 +71,8 @@ export const Content = styled.div`
   justify-content: space-between;
   img {
     margin-right: 25px;
+    width: 35px;
+    height: 50px;
   }
   .food-info {
     width: 100%;

@@ -8,7 +8,8 @@ import mainFood1 from "../assets/svg/mainFood1.svg";
 import mainFood2 from "../assets/svg/mainFood2.svg";
 import mainFood3 from "../assets/svg/mainFood3.svg";
 import mainFood4 from "../assets/svg/mainFood4.svg";
-
+import home from "../assets/img/home.png";
+import makerThin from "../assets/svg/makerThin.svg";
 const Main = () => {
   const navigate = useNavigate();
 
@@ -24,6 +25,9 @@ const Main = () => {
   };
   const goFoodDetail = () => {
     navigate(`/foodDetail`);
+  };
+  const goSearchPage = () => {
+    navigate(`/searchPage`);
   };
   return (
     <M.Container>
@@ -100,15 +104,15 @@ const Main = () => {
         <M.Hr />
         <M.Item>
           <M.Maker>
-            <img src={`${process.env.PUBLIC_URL}/images/MakerY.svg`} alt="메이커" />
+            <img src={makerThin} alt="메이커" />
             <div>메이커</div>
           </M.Maker>
-          <M.Search>
+          <M.Search onClick={goSearchPage}>
             <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </M.Search>
           <M.Home onClick={goHome}>
-            <img src={`${process.env.PUBLIC_URL}/images/Home.svg`} alt="홈" />
+            <img src={home} alt="홈" />
             <div>홈</div>
           </M.Home>
           <M.Write onClick={gowrite}>
