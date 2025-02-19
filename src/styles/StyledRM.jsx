@@ -205,6 +205,8 @@ export const Go = styled.div`
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    background: transparent;
+    border: none;
   }
 `;
 
