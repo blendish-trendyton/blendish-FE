@@ -123,7 +123,13 @@ const RecipeMaker = () => {
             </R.Type>
             <R.Time>
               <Dropdown
-                options={["15", "~ 30분", "~ 1시간", "~ 2시간", "2시간 이상"]}
+                options={[
+                  "~ 15분",
+                  "~ 30분",
+                  "~ 1시간",
+                  "~ 2시간",
+                  "2시간 이상",
+                ]}
                 selected={cookingTime}
                 setSelected={setCookingTime}
                 multiple={false}
