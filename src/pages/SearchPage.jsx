@@ -43,11 +43,11 @@ const RecipeMore = () => {
       <S.RecentlyBox>
         <S.Recently>
           <img src={mainFood1}></img>
-          <div>광양 불고기</div>
+          <p style={{ margin: "8px 0 " }}>광양 불고기</p>
         </S.Recently>
         <S.Recently>
           <img src={mainFood2}></img>
-          <div>매운 떡볶이</div>
+          <p style={{ margin: "8px 0 " }}>매운 떡볶이</p>
         </S.Recently>
       </S.RecentlyBox>
       <S.Fdiv>

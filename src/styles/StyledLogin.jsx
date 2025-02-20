@@ -101,6 +101,7 @@ export const ID = styled.div`
     font-style: normal;
     line-height: normal;
     opacity: 0.85;
+    font-weight: 300;
   }
   img {
     width: 319px;
@@ -118,10 +119,6 @@ export const LoginBox = styled.div`
   display: flex;
   box-sizing: border-box;
   background-color: #ff9d00;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  bottom: 250px;
   border: 0cap;
   width: 300px;
   height: 45px;
@@ -146,12 +143,12 @@ export const LoginBox = styled.div`
 export const Search = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 110px;
+  margin-top: 10px;
   color: #fff;
-  font-weight: 0;
+  font-weight: 300;
 
   p {
-    margin-right: 10px;
+    margin-right: 5px;
     opacity: 0.85;
   }
 `;
