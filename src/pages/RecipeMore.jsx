@@ -1,6 +1,5 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import * as R from "../styles/StyledRecipeMore";
 import * as M from "../styles/StyledMain";
 import backBtn from "../assets/svg/blackBackBtn.svg";
@@ -8,81 +7,125 @@ import home from "../assets/svg/home.svg";
 import CommentLine from "../assets/svg/CommentLine.svg";
 import blackUnderLine from "../assets/svg/blackUnderLine.svg";
 import grayUnderLine from "../assets/svg/grayUnderLine.svg";
-import Recipe1 from "../assets/svg/Recipe1.svg";
-
-// import axios from "axios";
+import Recipe1 from "../assets/svg/Recipe1.svg"; //디폴트 이미지
 
 const RecipeMore = () => {
   const navigate = useNavigate();
+  const { recipeId } = useParams(); // URL에서 recipeId 가져오기
 
-  const goHome = () => {
-    navigate("/");
-  };
-  const goBack = () => {
-    navigate(-1);
-  };
+  const [recipeData, setRecipeData] = useState(null); // 레시피 데이터 저장
+  const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 저장
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
+  useEffect(() => {
+    const fetchRecipeDetails = async () => {
+      try {
+        const token =
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXI0NTYiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc0MDAzOTQ1OCwiZXhwIjoxNzQwMjEyMjU4fQ.4GrE6MSLAPqnrIzG48iBaxY4U_IrukJ0W51RDl-KjGM"; // 로그인 후 받은 토큰
+
+        const response = await fetch(`https://junyeongan.store/api/community/AllDetailRecipe?recipeId=${recipeId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(" 레시피 전체 상세 응답:", result);
+
+        if (result.status === 200 && result.data) {
+          setRecipeData(result.data);
+        } else {
+          setErrorMessage("레시피 데이터를 불러올 수 없습니다.");
+        }
+      } catch (error) {
+        console.error(" 레시피 데이터 가져오기 실패:", error.message);
+        setErrorMessage("서버 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (recipeId) {
+      fetchRecipeDetails();
+    }
+  }, [recipeId]);
+
+  const goHome = () => navigate("/");
+  const goBack = () => navigate(-1);
 
   return (
     <R.Container>
       <R.Header>
-        <img src={backBtn} onClick={goBack}></img>
-        <img src={home} className="home" onClick={goHome}></img>
+        <img src={backBtn} onClick={goBack} alt="뒤로 가기" />
+        <img src={home} className="home" onClick={goHome} alt="홈" />
       </R.Header>
-      <R.FoodInfoBox>
-        토마토 파스타
-        <R.FoodInfo>
-          <button>난이도 : 하</button>
-          <button>소요시간 : ~ 15분</button>
-        </R.FoodInfo>
-      </R.FoodInfoBox>
-      {/* 섹션 변경 라인*/}
-      <img src={CommentLine}></img>
-      <R.IngredientBox>
-        <R.Ingredient>
-          <h4>필요 재료</h4>
-          <span>(1인분)</span>
-        </R.Ingredient>
-        <img src={blackUnderLine}></img>
-        <R.IngredientList>
-          <span>토마토 소스</span>
-          <strong>150g</strong>
-        </R.IngredientList>
-        <img src={grayUnderLine}></img>
-        <R.IngredientList>
-          <span>양파</span>
-          <strong>1/3개</strong>
-        </R.IngredientList>
-        <img src={grayUnderLine}></img>
-        <R.IngredientList>
-          <span>다진 돼지고기</span>
-          <strong>100g</strong>
-        </R.IngredientList>
-        <img src={grayUnderLine}></img>
-        <R.IngredientList>
-          <span>스파게티 면</span>
-          <strong>150g</strong>
-        </R.IngredientList>
-        <img src={grayUnderLine}></img>
-        <R.IngredientList>
-          <span>파마산 치즈가루</span>
-          <strong>1 큰술</strong>
-        </R.IngredientList>
-        <img src={grayUnderLine}></img>
-      </R.IngredientBox>
-      <img src={CommentLine} style={{ marginTop: "20px" }}></img> {/* 섹션 변경 라인*/}
-      <R.RecipeBox>
-        <h4>조리 방법</h4>
-        <img src={blackUnderLine}></img>
-        <R.Recipe>
-          <button>1</button>
-          <img src={Recipe1}></img>
-          <span>냄비에 물 1L정도를 붓고 강불에서 끓입니다. 물이 끓기 시작하면 소금 1작은술을 넣습니다.</span>
-        </R.Recipe>
-        <R.Recipe>
-          <button>2</button>
-          <img src={Recipe1}></img>
-        </R.Recipe>
-      </R.RecipeBox>
+
+      {loading ? (
+        <p style={{ textAlign: "center", marginTop: "20px" }}>로딩 중...</p>
+      ) : errorMessage ? (
+        <p style={{ color: "red", textAlign: "center", marginTop: "20px" }}>{errorMessage}</p>
+      ) : recipeData ? (
+        <>
+          <R.FoodInfoBox>
+            {recipeData.name}
+            <R.FoodInfo>
+              <button>난이도 : {recipeData.level || "N/A"}</button>
+              <button>소요시간 : {recipeData.time || "정보 없음"}</button>
+            </R.FoodInfo>
+          </R.FoodInfoBox>
+
+          <img src={CommentLine} alt="구분선" />
+
+          {/* 필요 재료 렌더링 */}
+          <R.IngredientBox>
+            <R.Ingredient>
+              <h4>필요 재료</h4>
+              <span>(1인분)</span>
+            </R.Ingredient>
+            <img src={blackUnderLine} alt="구분선" />
+
+            {recipeData.ingredients && recipeData.ingredients.length > 0 ? (
+              recipeData.ingredients.map((ingredient, index) => (
+                <React.Fragment key={index}>
+                  <R.IngredientList>
+                    <span>{ingredient.name}</span>
+                    <strong>{ingredient.amount}</strong>
+                  </R.IngredientList>
+                  <img src={grayUnderLine} alt="구분선" />
+                </React.Fragment>
+              ))
+            ) : (
+              <p style={{ textAlign: "center", marginTop: "10px" }}>재료 정보가 없습니다.</p>
+            )}
+          </R.IngredientBox>
+
+          <img src={CommentLine} style={{ marginTop: "20px" }} alt="구분선" />
+
+          {/* 조리 방법 렌더링 */}
+          <R.RecipeBox>
+            <h4>조리 방법</h4>
+            <img src={blackUnderLine} alt="구분선" />
+
+            {recipeData.recipeSteps && recipeData.recipeSteps.length > 0 ? (
+              recipeData.recipeSteps.map((step, index) => (
+                <R.Recipe key={index}>
+                  <button>{step.stepNum || index + 1}</button>
+                  <img src={step.stepImage || Recipe1} alt={`조리 과정 ${step.stepNum}`} />
+                  <span>{step.details || "조리 방법 정보가 없습니다."}</span>
+                </R.Recipe>
+              ))
+            ) : (
+              <p style={{ textAlign: "center", marginTop: "10px" }}>조리 방법 정보가 없습니다.</p>
+            )}
+          </R.RecipeBox>
+        </>
+      ) : null}
     </R.Container>
   );
 };

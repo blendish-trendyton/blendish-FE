@@ -7,7 +7,7 @@ export const Container = styled.div`
   text-align: center; /* 가로 중앙 정렬 */
   position: relative;
   margin: 0 auto;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 0;
   box-sizing: border-box;
   background: #fff;
@@ -38,6 +38,10 @@ export const TopImg = styled.div`
     right: 15px;
     top: 220px;
   }
+  .foodImg {
+    width: 393.644px;
+    height: 318px;
+  }
 `;
 
 export const UserPro = styled.div`
@@ -47,6 +51,10 @@ export const UserPro = styled.div`
   width: 100%; /* 부모 너비를 꽉 채움 */
   margin: 25px; /* 왼쪽에 여유 공간 추가 */
   line-height: 1.3;
+  img {
+    width: 35.671px;
+    height: 35.522px;
+  }
 
   .date-box {
     margin-left: 15px;
