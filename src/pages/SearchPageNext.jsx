@@ -82,7 +82,7 @@ const RecipeMore = () => {
           <S.SearchBox>
             <S.SearchIn>
               <h4>최근 검색어</h4>
-              <span style={{ margin: "40px 20px 0 0", cursor: "pointer" }} onClick={clearHistory}>
+              <span style={{ margin: "40px 23px 0 0", cursor: "pointer" }} onClick={clearHistory}>
                 전체삭제
               </span>
             </S.SearchIn>

@@ -35,6 +35,7 @@ export const FoodInfoBox = styled.div`
   display: block;
   font-size: 28px;
   font-weight: 600;
+  margin-top: 20px;
 `;
 
 export const FoodInfo = styled.div`
@@ -100,7 +101,7 @@ export const Recipe = styled.div`
     font-size: 14px;
   }
   button {
-    margin: 20px 0;
+    margin: 32px 15px 15px 0px;
     color: #fff;
     background-color: #fcb01b;
     border-radius: 5px;

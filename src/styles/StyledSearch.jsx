@@ -52,10 +52,10 @@ export const Search = styled.div`
 
 export const RecentlyBox = styled.div`
   display: flex;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
   gap: 14px;
-  margin: 15px 20px;
+  margin: 15px 22px;
 `;
 export const Recently = styled.div`
   img {
@@ -72,17 +72,18 @@ export const Fdiv = styled.div`
 export const FamouseBox = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: left;
+  margin-left: 22px;
 `;
 
 export const Famouse = styled.div`
   display: block;
-  margin-right: 20px;
+  margin-right: 40px;
 `;
 export const Fcontent = styled.div`
   display: flex;
   align-items: center;
-
+  font-size: 14px;
   button {
     margin: 20px 14px;
     color: #fff;
@@ -133,7 +134,7 @@ export const SearchBox = styled.div`
   h4 {
     margin-top: 40px !important;
     width: 80%;
-    font-size: 20px;
+    font-size: 16px;
   }
 `;
 export const SearchIn = styled.div`
@@ -141,15 +142,16 @@ export const SearchIn = styled.div`
   justify-content: space-between;
   span {
     color: #6a6a6a;
+    font-size: 12px;
   }
   img {
-    margin-right: 20px;
+    margin-right: 23px;
   }
 `;
 
 export const MenuBox = styled.div`
   display: flex;
-  padding: 14px 30px;
+  padding: 15px 30px 0 22px;
   align-items: center;
   img {
     width: 22px;

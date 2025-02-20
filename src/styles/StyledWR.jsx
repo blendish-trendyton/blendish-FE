@@ -458,6 +458,7 @@ export const MDet = styled.div`
     margin-top: 20px;
     margin-bottom: 6px;
     border: none;
+    font-size: 14px;
 
     &:focus {
       outline: none;
@@ -639,7 +640,7 @@ export const Item = styled.div`
   display: flex;
   felx-direction: row;
   justify-content: center;
-  align- items: center;
+  align-items: center;
   text-align: center;
   margin-top: 15px;
   gap: 50px;
