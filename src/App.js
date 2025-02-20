@@ -32,7 +32,7 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/foodDetail" element={<FoodDetail />} />
+        <Route path="/foodDetail/:recipeId" element={<FoodDetail />} />
         <Route path="/start" element={<Start />} />
         <Route path="/logins" element={<Logins />} />
         <Route path="/login" element={<Login />} />
@@ -41,7 +41,7 @@ function App() {
         <Route path="/searchBB/EditBB" element={<EditBB />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signUp/selectPage" element={<SelectPage />} />
-        <Route path="/recipeMore" element={<RecipeMore />} />
+        <Route path="/recipeMore/:recipeId" element={<RecipeMore />} />
         <Route path="/searchPage" element={<SearchPage />} />
         <Route path="/searchPageNext" element={<SearchPageNext />} />
         <Route path="/searchList" element={<SearchList />} />
