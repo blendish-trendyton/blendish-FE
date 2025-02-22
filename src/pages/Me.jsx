@@ -4,6 +4,23 @@ import { useNavigate } from "react-router-dom";
 import * as M from "../styles/StyledMe";
 import axios from "axios";
 
+// ✅ Axios 인스턴스 생성
+const api = axios.create({
+  baseURL: "https://junyeongan.store/api", // 기본 API 주소 설정
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// ✅ 모든 요청에 토큰 자동 포함
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("authToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 const Me = () => {
   const navigate = useNavigate();
 
@@ -33,31 +50,84 @@ const Me = () => {
     navigate(`/searchPage`);
   };
 
+  // ✅ 사용자 데이터 상태 관리
   const [userData, setUserData] = useState({
     userId: "",
     hometown: "",
     country: "",
     profilePic: "",
+    tastePreference: [],
   });
+
+  // // ✅ 사용자 데이터 조회 요청
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await api.get("/user/me");
+  //       if (response.data) {
+  //         setUserData({
+  //           userId: response.data.userId,
+  //           hometown: response.data.hometown,
+  //           country: response.data.country,
+  //           profilePic: response.data.profilePic,
+  //           tastePreference: response.data.tastePreference || [],
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+
+  //   fetchUserData();
+  // }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("/api/user/me");
+        // ✅ 로컬 스토리지에서 토큰 가져오기
+        const token = localStorage.getItem("authToken");
+        console.log("📌 요청에 사용된 토큰:", token); // ✅ 콘솔에 토큰 출력
+
+        // ✅ 토큰이 있으면 헤더에 추가
+        const response = await api.get("/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`, // 토큰 포함
+            "Content-Type": "application/json",
+          },
+        });
+
+        // ✅ 응답 데이터 처리
         if (response.data) {
           setUserData({
             userId: response.data.userId,
             hometown: response.data.hometown,
             country: response.data.country,
             profilePic: response.data.profilePic,
+            tastePreference: response.data.tastePreference || [],
           });
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("❌ 사용자 정보 요청 중 오류 발생:", error);
       }
     };
+
     fetchUserData();
   }, []);
+
+  // ✅ 모든 요청에 토큰 자동 포함
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+
+  // ✅ 로그아웃 함수 추가
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // 토큰 제거
+    navigate("/"); // 홈으로 이동
+  };
 
   return (
     <M.Container>
@@ -83,6 +153,9 @@ const Me = () => {
         <M.Edit onClick={goedit}>
           <div>내 정보 수정</div>
         </M.Edit>
+        <M.Logout onClick={handleLogout}>
+          <div>로그아웃</div>
+        </M.Logout>
       </M.Info>
       <M.Hr1></M.Hr1>
       <M.Myr>
