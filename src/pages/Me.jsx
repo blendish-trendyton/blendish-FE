@@ -126,7 +126,7 @@ const Me = () => {
   // ✅ 로그아웃 함수 추가
   const handleLogout = () => {
     localStorage.removeItem("authToken"); // 토큰 제거
-    navigate("/"); // 홈으로 이동
+    navigate("/"); // 메인페이지로 이동
   };
 
   return (
