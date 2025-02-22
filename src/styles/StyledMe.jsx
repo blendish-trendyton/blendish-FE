@@ -137,7 +137,7 @@ export const Edit = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 300px;
+  width: 160px;
   height: 34px;
   flex-shrink: 0;
   border-radius: 5px;
@@ -146,7 +146,28 @@ export const Edit = styled.div`
   div {
     color: #fff;
     font-family: "Instrument Sans";
-    font-size: 16px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+`;
+
+export const Logout = styled.div`
+  margin-top: 17px;
+  width: 160px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: #bdbdbd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div {
+    color: #fff;
+    font-family: "Instrument Sans";
+    font-size: 14px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
