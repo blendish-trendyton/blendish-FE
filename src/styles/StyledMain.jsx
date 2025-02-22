@@ -87,7 +87,7 @@ export const Reaction = styled.div`
   img {
     width: 14px !important;
     height: 14px !important;
-    margin: 0 5px;
+    margin: 0 5px 0 0;
   }
   span {
     margin: 0 10px 0 0;
@@ -249,3 +249,5 @@ export const Me = styled.div`
     line-height: normal;
   }
 `;
+
+export const LogoutButton = styled.div``;

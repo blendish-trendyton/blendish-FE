@@ -2,16 +2,14 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  text-align: center; /* 가로 중앙 정렬 */
-  position: relative;
+  flex-direction: column; /* 요소들을 위에서 아래로 배치 */
+  align-items: center; /* 가로 중앙 정렬 */
+  width: 393px;
+  min-height: 100vh; /* 화면 전체 높이 유지 */
+  background: #fff;
   margin: 0 auto;
-  /* min-height: 100vh; */
   padding: 0;
   box-sizing: border-box;
-  background: #fff;
-  width: 393px;
 `;
 
 export const TopImg = styled.div`
@@ -49,7 +47,7 @@ export const UserPro = styled.div`
   font-family: "Instrument Sans";
   text-align: left;
   width: 100%; /* 부모 너비를 꽉 채움 */
-  margin: 25px; /* 왼쪽에 여유 공간 추가 */
+  padding: 25px;
   line-height: 1.3;
   img {
     width: 35.671px;
@@ -137,6 +135,16 @@ export const CommentBox = styled.div`
   p {
     font-size: 12px;
     cursor: pointer;
+  }
+  .commentSec {
+    padding: 0;
+    z-index: 1000;
+    position: fixed;
+    bottom: 82px;
+    width: 100%; /* 부모 요소(Container)의 너비에 맞춤 */
+    max-width: 393px; /* 최대 너비를 Container와 동일하게 설정 */
+    left: 50%;
+    transform: translateX(-50%); /* 중앙 정렬 */
   }
 `;
 
@@ -328,5 +336,32 @@ export const Me = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+  }
+`;
+
+export const Information = styled.div`
+  display: flex;
+  padding: 16px 25px;
+  font-size: 12px;
+  align-self: flex-start; /* 개별 요소만 왼쪽 정렬 */
+`;
+
+export const CommentInputBox = styled.div`
+  display: flex;
+  position: fixed; /* 하단에 고정 */
+  bottom: 25px; /* 화면의 맨 아래로 위치 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  input {
+    border-radius: 5px;
+    width: 295.233px;
+    height: 41px;
+    border: 1.5px solid #ddd;
+    padding-left: 17px;
+  }
+  img {
+    background-color: #fcb01b;
+    padding: 8px 14px;
+    border-radius: 5px;
+    margin-left: 5px;
   }
 `;
