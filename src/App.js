@@ -26,6 +26,8 @@ import SearchPageNext from "./pages/SearchPageNext";
 import SearchList from "./pages/SearchList";
 import SearchListDetail from "./pages/SearchListDetail";
 import LocalRecipeMore from "./pages/LocalRecipeMore";
+import CommentMore from "./pages/CommentMore";
+
 function App() {
   return (
     <BrowserRouter>
@@ -42,6 +44,7 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signUp/selectPage" element={<SelectPage />} />
         <Route path="/recipeMore/:recipeId" element={<RecipeMore />} />
+        <Route path="/commentMore/:recipeId" element={<CommentMore />} />
         <Route path="/searchPage" element={<SearchPage />} />
         <Route path="/searchPageNext" element={<SearchPageNext />} />
         <Route path="/searchList" element={<SearchList />} />

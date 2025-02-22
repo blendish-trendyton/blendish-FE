@@ -16,6 +16,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleLogin = async () => {
     if (!username || !password) {
       setErrorMessage("아이디와 비밀번호를 입력해주세요.");
@@ -29,16 +30,19 @@ const Login = () => {
 
       const response = await fetch("https://junyeongan.store/login", {
         method: "POST",
-        body: formData, // FormData 전송
+        body: formData,
       });
 
-      console.log(`📡 서버 응답 상태 코드: ${response.status}`);
+      console.log(`서버 응답 상태 코드: ${response.status}`);
 
-      // 응답 상태 코드 체크 (201, 200, 204 등)
       if (response.ok) {
+        // 헤더에서 `Authorization` 토큰 가져오기
+        const token = response.headers.get("Authorization");
+        console.log("🔑 응답 헤더에서 가져온 토큰:", token);
+
         let result = null;
 
-        // 응답 본문이 있는지 체크 후 JSON 파싱
+        // 응답 본문(JSON) 파싱 (일부 서버는 본문이 없을 수도 있음)
         const responseText = await response.text();
         if (responseText) {
           try {
@@ -49,18 +53,28 @@ const Login = () => {
             console.warn("서버 응답 (텍스트):", responseText);
           }
         } else {
-          console.warn("서버 응답이 비어 있음");
+          console.warn("⚠️ 서버 응답이 비어 있음 (Content-Length: 0)");
         }
 
-        alert("로그인 성공!");
-        if (result && result.data) {
-          localStorage.setItem("userData", JSON.stringify(result.data)); // 사용자 정보 저장
+        // 토큰 저장 (Bearer 제거 후 저장)
+        if (token) {
+          const cleanToken = token.replace("Bearer ", ""); // `Bearer` 제거
+          localStorage.setItem("user_token", cleanToken);
+        } else {
+          console.warn("⚠️ `Authorization` 헤더에 토큰이 없음!");
         }
+
+        // 사용자 정보 저장 (응답 본문이 있을 경우)
+        if (result && result.data) {
+          localStorage.setItem("userData", JSON.stringify(result.data));
+        }
+
+        // alert("로그인 성공!");
         navigate("/"); // 로그인 후 이동할 페이지
         return;
       }
 
-      // 응답이 실패한 경우
+      // 로그인 실패 처리
       setErrorMessage(`로그인 실패 (HTTP ${response.status})`);
     } catch (error) {
       console.error("로그인 오류:", error);

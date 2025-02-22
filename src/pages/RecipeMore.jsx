@@ -7,7 +7,7 @@ import home from "../assets/svg/home.svg";
 import CommentLine from "../assets/svg/CommentLine.svg";
 import blackUnderLine from "../assets/svg/blackUnderLine.svg";
 import grayUnderLine from "../assets/svg/grayUnderLine.svg";
-import Recipe1 from "../assets/svg/Recipe1.svg"; //디폴트 이미지
+import Recipe1 from "../assets/svg/Recipe1.svg"; // 디폴트 이미지
 
 const RecipeMore = () => {
   const navigate = useNavigate();
@@ -17,17 +17,27 @@ const RecipeMore = () => {
   const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 저장
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
+  // ✅ 로컬스토리지에서 토큰 가져오기
+  const token = localStorage.getItem("user_token");
+
+  // ✅ 로그인되지 않은 경우 로그인 페이지로 리디렉트
+  useEffect(() => {
+    if (!token) {
+      console.warn("🔑 토큰이 없음, 로그인 페이지로 이동");
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
   useEffect(() => {
     const fetchRecipeDetails = async () => {
-      try {
-        const token =
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXI0NTYiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc0MDAzOTQ1OCwiZXhwIjoxNzQwMjEyMjU4fQ.4GrE6MSLAPqnrIzG48iBaxY4U_IrukJ0W51RDl-KjGM"; // 로그인 후 받은 토큰
+      if (!token) return;
 
+      try {
         const response = await fetch(`https://junyeongan.store/api/community/AllDetailRecipe?recipeId=${recipeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -36,7 +46,7 @@ const RecipeMore = () => {
         }
 
         const result = await response.json();
-        console.log(" 레시피 전체 상세 응답:", result);
+        console.log("📩 레시피 전체 상세 응답:", result);
 
         if (result.status === 200 && result.data) {
           setRecipeData(result.data);
@@ -44,7 +54,7 @@ const RecipeMore = () => {
           setErrorMessage("레시피 데이터를 불러올 수 없습니다.");
         }
       } catch (error) {
-        console.error(" 레시피 데이터 가져오기 실패:", error.message);
+        console.error("❌ 레시피 데이터 가져오기 실패:", error.message);
         setErrorMessage("서버 오류가 발생했습니다.");
       } finally {
         setLoading(false);
@@ -54,7 +64,7 @@ const RecipeMore = () => {
     if (recipeId) {
       fetchRecipeDetails();
     }
-  }, [recipeId]);
+  }, [recipeId, token]);
 
   const goHome = () => navigate("/");
   const goBack = () => navigate(-1);

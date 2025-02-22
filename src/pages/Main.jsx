@@ -5,12 +5,9 @@ import mainLogo from "../assets/svg/mainLogo.svg";
 import Good from "../assets/svg/good.svg";
 import Comment from "../assets/svg/comment.svg";
 import defaultFoodImage from "../assets/svg/mainFood1.svg"; // 기본 이미지 설정
-import mainFood1 from "../assets/svg/mainFood1.svg"; // 기본 이미지 설정
-import mainFood2 from "../assets/svg/mainFood2.svg";
-import mainFood3 from "../assets/svg/mainFood3.svg";
-import mainFood4 from "../assets/svg/mainFood4.svg";
 import home from "../assets/img/home.png";
 import makerThin from "../assets/svg/makerThin.svg";
+
 const Main = () => {
   // 페이지 이동
   const navigate = useNavigate();
@@ -20,61 +17,70 @@ const Main = () => {
   const goSearchPage = () => navigate(`/searchPage`);
   const goMaker = () => navigate(`/recipemaker`);
 
-  const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 상태 추가
-  const [todayRecipes, setTodayRecipes] = useState([]); // API 데이터 저장
-  const [hotRecipes, setHotRecipes] = useState([]); // 인기 레시피 API 데이터 저장
+  const [todayRecipes, setTodayRecipes] = useState([]); // 오늘의 레시피 데이터 저장
+  const [hotRecipes, setHotRecipes] = useState([]); // 인기 레시피 데이터 저장
+  const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 저장
 
-  // 오늘의 레시피
+  // localStorage에서 user_token 가져오기
+  const token = localStorage.getItem("user_token");
+
+  // 토큰이 없으면 로그인 페이지로 이동
   useEffect(() => {
+    if (!token) {
+      console.warn("토큰 없음, 로그인 페이지로 이동");
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
+  // 오늘의 레시피 가져오기
+  useEffect(() => {
+    if (!token) return;
+
     const fetchTodayRecipes = async () => {
       try {
-        const token =
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXI0NTYiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc0MDAzOTQ1OCwiZXhwIjoxNzQwMjEyMjU4fQ.4GrE6MSLAPqnrIzG48iBaxY4U_IrukJ0W51RDl-KjGM"; // 로그인 후 받은 토큰
-
         const response = await fetch("https://junyeongan.store/api/community/TodayRecipe", {
           method: "GET",
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token, // Bearer 토큰 추가
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
 
         const result = await response.json();
-        console.log("📩 오늘의 레시피 API 응답:", result);
+        console.log("오늘의 레시피 API 응답:", result);
 
         if (result.status === 200 && Array.isArray(result.data)) {
           setTodayRecipes(result.data);
         } else {
-          console.error("데이터 형식이 올바르지 않음");
+          console.error("오늘의 레시피 데이터 형식이 올바르지 않음");
         }
       } catch (error) {
-        console.error("오늘의 레시피 데이터 가져오기 실패:", error.message);
+        console.error("오늘의 레시피 가져오기 실패:", error.message);
       }
     };
 
-    // 인기 레시피
+    fetchTodayRecipes();
+  }, [token]);
+
+  // 🔹 인기 레시피 가져오기
+  useEffect(() => {
+    if (!token) return;
+
     const fetchHotRecipes = async () => {
       try {
-        const token =
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXI0NTYiLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc0MDAzOTQ1OCwiZXhwIjoxNzQwMjEyMjU4fQ.4GrE6MSLAPqnrIzG48iBaxY4U_IrukJ0W51RDl-KjGM"; // 로그인 후 받은 토큰
-
         const response = await fetch("https://junyeongan.store/api/community/HotRecipe", {
           method: "GET",
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
 
         const result = await response.json();
         console.log("인기 레시피 API 응답:", result);
@@ -85,14 +91,14 @@ const Main = () => {
           console.error("인기 레시피 데이터 형식이 올바르지 않음");
         }
       } catch (error) {
-        console.error("인기 레시피 데이터 가져오기 실패:", error.message);
+        console.error("인기 레시피 가져오기 실패:", error.message);
       }
     };
 
-    fetchTodayRecipes();
     fetchHotRecipes();
-  }, []);
+  }, [token]);
 
+  // 레시피 상세 페이지 이동
   const goFoodDetail = (recipeId) => {
     navigate(`/foodDetail/${recipeId}`);
   };
@@ -106,7 +112,6 @@ const Main = () => {
           {todayRecipes.length > 0 ? (
             todayRecipes.map((recipe) => (
               <div key={recipe.recipeId} onClick={() => goFoodDetail(recipe.recipeId)}>
-                {/* 이미지가 없을 경우 기본 이미지 사용 */}
                 <img src={recipe.foodImage ? recipe.foodImage : defaultFoodImage} alt={recipe.name} className="recipe-box" />
                 <span>{recipe.name}</span>
               </div>
