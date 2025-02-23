@@ -55,11 +55,10 @@ const FoodDetail = () => {
 
         if (result.status === 200 && result.data) {
           setRecipeData(result.data);
-          setIsLiked(result.data.hart); // 서버에서 받은 좋아요 상태 적용
-          setLikeCount(result.data.likeCount); // 좋아요 개수 설정
-          setComments(result.data.comments || []); //댓글 데이터 추가
-          setIsScrapped(result.data.scrapped); // 스크랩 여부
-          setScrapCount(result.data.scrapCount || 0); // 스크랩한 사람 수 설정
+          setIsLiked(result.data.hart);
+          setLikeCount(result.data.likeCount);
+          setIsScrapped(result.data.scrapped);
+          setScrapCount(result.data.scrapCount || 0);
         } else {
           setErrorMessage("레시피 데이터를 불러올 수 없습니다.");
         }
@@ -69,8 +68,38 @@ const FoodDetail = () => {
       }
     };
 
+    // 🔹 댓글 가져오는 함수 추가
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`https://junyeongan.store/api/Comment/ParentsComment?recipeId=${recipeId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("📝 댓글 API 응답:", result);
+
+        if (result.status === 200) {
+          setComments(result.data || []);
+        } else {
+          setErrorMessage("댓글 데이터를 불러올 수 없습니다.");
+        }
+      } catch (error) {
+        console.error("❌ 댓글 불러오기 실패:", error.message);
+        setErrorMessage("서버 오류가 발생했습니다.");
+      }
+    };
+
     if (recipeId) {
       fetchRecipeDetail();
+      fetchComments(); // 🔹 댓글 불러오는 함수 호출
     }
   }, [recipeId, token]);
 
