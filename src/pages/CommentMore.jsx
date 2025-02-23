@@ -59,9 +59,18 @@ const CommentMore = () => {
     fetchComments();
   }, [recipeId, token]);
 
-  // 댓글 전송 함수 (새로운 API 사용)
+  // 댓글 전송 함수 (JSON 데이터 타입 변환)
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
+
+    // JSON 데이터 타입 변환 (recipeId: Long, parentCommentId: Long)
+    const requestBody = {
+      recipeId: Number(recipeId), // recipeId를 숫자로 변환하여 전송
+      parentCommentId: 0, // 최상위 댓글일 경우 0 (null을 허용하지 않는 경우 대비)
+      content: newComment.trim(), // 공백 제거
+    };
+
+    console.log("요청 바디:", JSON.stringify(requestBody));
 
     try {
       const response = await fetch(`https://junyeongan.store/api/Comment/InsertComment`, {
@@ -70,19 +79,17 @@ const CommentMore = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          recipeId: Number(recipeId),
-          parentCommentId: null, // 부모 댓글 없음 (최상위 댓글)
-          content: newComment,
-        }),
+        body: JSON.stringify(requestBody),
       });
+
+      console.log("📢 서버 응답 상태 코드:", response.status);
 
       if (!response.ok) {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("📝 댓글 추가 API 응답:", result);
+      console.log("댓글 추가 API 응답:", result);
 
       if (result.status === 200) {
         // 새로운 댓글을 리스트에 추가
@@ -100,7 +107,7 @@ const CommentMore = () => {
         setNewComment(""); // 입력 필드 초기화
       }
     } catch (error) {
-      console.error("❌ 댓글 작성 실패:", error.message);
+      console.error(" 댓글 작성 실패:", error.message);
     }
   };
 
