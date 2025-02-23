@@ -17,6 +17,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [isIdAvailable, setIsIdAvailable] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(""); // 비밀번호 오류 메시지
 
   const isMatch = password !== "" && password === confirmPassword;
 
@@ -44,10 +45,21 @@ const SignUp = () => {
     }
   };
 
+  // 비밀번호 입력 중 오류 메시지 초기화
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError(""); // 입력 시 오류 메시지 삭제
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordError(""); // 입력 시 오류 메시지 삭제
+  };
+
   // `회원가입`을 나중에 진행하므로, 다음 페이지로 이동하면서 필요한 정보 전달
   const goToSelectPage = () => {
     if (!isMatch) {
-      setErrorMessage("비밀번호가 일치하지 않습니다.");
+      setPasswordError("비밀번호가 일치하지 않습니다.");
       return;
     }
     if (!isIdAvailable) {
@@ -75,7 +87,10 @@ const SignUp = () => {
               <span>중복확인</span>
             </S.LoginBox>
           </div>
-          <img className="under-line" src={Line} style={{ width: "235px" }} />
+
+          <img className={`under-line ${errorMessage ? "no-margin" : ""}`} src={Line} style={{ width: "235px" }} />
+          {/* 아이디 중복 확인 메시지 추가 */}
+          {errorMessage && <p className="id-check-message">{errorMessage}</p>}
 
           <div className="inputBox">
             <p>이메일</p>
@@ -85,19 +100,21 @@ const SignUp = () => {
 
           <div className="inputBox">
             <p>비밀번호</p>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" value={password} onChange={handlePasswordChange} />
           </div>
           <img className="under-line" src={Line} />
 
           <div className="inputBox">
             <p>비밀번호 확인</p>
-            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            <input type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
             {isMatch && <img src={Circle} alt="correct" className="check-icon" />}
           </div>
+
+          {/* 항상 존재하는 밑줄 */}
           <img className="under-line" src={Line} />
 
-          {/* 오류 메시지 */}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {/* 비밀번호 오류 메시지 (없을 때도 height 유지) */}
+          <div className="error-message-container">{passwordError && <p className="password-error-message">{passwordError}</p>}</div>
         </S.ID>
 
         {/* 회원가입 요청을 하지 않고, 다음 페이지로 이동 */}
