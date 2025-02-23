@@ -136,6 +136,33 @@ export const ID = styled.div`
     background-color: black; /* 옵션 드롭다운 배경색 */
     color: white; /* 옵션 글자색 */
   }
+  /* 아이디 중복 확인 메시지 스타일 */
+  .id-check-message {
+    color: #ff4d4d;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  /* 기본 줄 스타일 (위치 고정) */
+  .under-line {
+    width: 319px;
+    height: 1px;
+    display: block;
+  }
+
+  /* 에러 메시지 컨테이너 (높이 유지) */
+  .error-message-container {
+    height: 16px; /* 항상 일정한 높이 유지 */
+    display: flex;
+    align-items: center;
+  }
+
+  /* 비밀번호 오류 메시지 스타일 */
+  .password-error-message {
+    color: #ff4d4d;
+    font-size: 13px;
+    margin-top: 5px;
+  }
 `;
 
 export const LoginBox = styled.div`
