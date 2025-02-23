@@ -10,7 +10,7 @@ export const Container = styled.div`
   box-sizing: border-box;
   background: #fff;
   width: 393px;
-  min-height: 100vh;
+  min-height: 140vh;
 `;
 
 export const TopImg = styled.div`
@@ -356,6 +356,7 @@ export const CommentInputBox = styled.div`
   z-index: 1000;
   align-items: center;
   justify-content: center;
+  overflow: scroll;
   input {
     border-radius: 5px;
     width: 295.233px;
