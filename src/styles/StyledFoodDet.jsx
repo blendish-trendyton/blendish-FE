@@ -2,14 +2,15 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column; /* 요소들을 위에서 아래로 배치 */
-  align-items: center; /* 가로 중앙 정렬 */
-  width: 393px;
-  min-height: 100vh; /* 화면 전체 높이 유지 */
-  background: #fff;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  position: relative;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  background: #fff;
+  width: 393px;
+  min-height: 100vh;
 `;
 
 export const TopImg = styled.div`
