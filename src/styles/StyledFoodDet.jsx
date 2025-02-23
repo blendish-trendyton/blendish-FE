@@ -386,6 +386,6 @@ export const ScrapBox = styled.div`
     transform: translate(-50%, -70%); /* 정확한 중앙 정렬 */
     font-size: 14px;
     font-weight: bold;
-    color: #fcb01b; /* 아이콘 색상과 대비되는 색상 사용 */
+    /* color: #fcb01b; 아이콘 색상과 대비되는 색상 사용 */
   }
 `;

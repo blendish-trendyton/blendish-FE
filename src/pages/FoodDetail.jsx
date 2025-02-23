@@ -30,13 +30,8 @@ const FoodDetail = () => {
   // 로컬스토리지에서 토큰 가져오기
   const token = localStorage.getItem("user_token");
 
-  // 로그인되지 않은 경우 로그인 페이지로 리디렉트
-  useEffect(() => {
-    if (!token) {
-      console.warn("토큰 없음, 로그인 페이지로 이동");
-      navigate("/login");
-    }
-  }, [token, navigate]);
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  console.log("JWT Payload:", payload);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -79,38 +74,45 @@ const FoodDetail = () => {
     }
   }, [recipeId, token]);
 
-  // 좋아요 버튼 클릭 시 API 요청
+  //좋아요 처리
   const toggleLike = async () => {
     const token = localStorage.getItem("user_token");
 
     if (!token) {
-      console.error(" 토큰이 없습니다. 로그인 필요");
+      console.error("토큰이 없습니다. 로그인 필요");
+      alert("로그인이 필요합니다.");
       navigate("/login");
       return;
     }
 
     if (!recipeId) {
-      console.error(" recipeId 값이 없습니다.");
+      console.error("recipeId 값이 없습니다.");
       return;
     }
 
+    // 현재 좋아요 상태에 따라 요청할 URL 선택
     const url = isLiked ? "https://junyeongan.store/api/community/deleteLike" : "https://junyeongan.store/api/community/updateLike";
+
+    console.log("좋아요 요청 URL:", url);
+    console.log("전송되는 recipeId:", Number(recipeId));
+    console.log("전송되는 토큰:", token);
 
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // JWT 토큰 포함
         },
-        body: JSON.stringify({ recipeId: Number(recipeId) }),
+        body: JSON.stringify(Number(recipeId)), // recipeId를 Long 타입으로 직접 전송
       });
 
       console.log("서버 응답 상태 코드:", response.status);
 
       if (response.status === 403) {
         console.error("403 오류 발생: 인증이 필요합니다.");
-        localStorage.removeItem("user_token"); //  만료된 토큰 삭제
+        localStorage.removeItem("user_token");
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
         navigate("/login");
         return;
       }
@@ -123,9 +125,18 @@ const FoodDetail = () => {
       console.log("좋아요 API 응답:", result);
 
       if (result.status === 200) {
+        // UI 상태 업데이트
         setIsLiked((prevLiked) => {
           const newLikedState = !prevLiked;
           setLikeCount((prevCount) => (newLikedState ? prevCount + 1 : prevCount - 1));
+
+          // recipeData도 최신 상태로 업데이트
+          setRecipeData((prevData) => ({
+            ...prevData,
+            hart: newLikedState,
+            likeCount: newLikedState ? prevData.likeCount + 1 : prevData.likeCount - 1,
+          }));
+
           return newLikedState;
         });
       } else {
@@ -136,8 +147,10 @@ const FoodDetail = () => {
     }
   };
 
-  //스크랩 전송 함수
+  // 스크랩 처리 함수 수정
   const toggleScrap = async () => {
+    const token = localStorage.getItem("user_token");
+
     if (!token) {
       console.error("토큰이 없습니다. 로그인 필요");
       navigate("/login");
@@ -155,8 +168,10 @@ const FoodDetail = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ recipeId: Number(recipeId) }),
+        body: JSON.stringify(Number(recipeId)), // recipeId를 Long 타입으로 직접 전송
       });
+
+      console.log("서버 응답 상태 코드:", response.status);
 
       if (response.status === 403) {
         console.error("403 오류 발생: 인증이 필요합니다.");
@@ -184,23 +199,20 @@ const FoodDetail = () => {
     }
   };
 
-  // 댓글 전송 함수
+  // 댓글 전송 함수 수정
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
 
-    const userData = JSON.parse(localStorage.getItem("userData"));
-    if (!userData) {
-      console.error("사용자 정보가 없습니다.");
+    const token = localStorage.getItem("user_token");
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 필요");
+      alert("로그인이 필요합니다.");
+      navigate("/login");
       return;
     }
 
-    const requestBody = {
-      recipeId: Number(recipeId),
-      parentCommentId: null,
-      content: newComment,
-    };
-
-    console.log("댓글 전송 요청 데이터:", requestBody);
+    console.log("전송할 댓글 데이터:", newComment);
+    console.log("전송할 recipeId:", Number(recipeId));
 
     try {
       const response = await fetch("https://junyeongan.store/api/Comment/InsertComment", {
@@ -209,7 +221,11 @@ const FoodDetail = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({
+          recipeId: Number(recipeId), // recipeId를 Long 타입으로 변환
+          parentCommentId: null,
+          content: newComment,
+        }),
       });
 
       console.log("서버 응답 상태 코드:", response.status);
@@ -225,8 +241,8 @@ const FoodDetail = () => {
         setComments((prevComments) => [
           {
             commentId: prevComments.length + 1,
-            userId: userData.username, // 사용자 이름
-            profilePic: userData.profilePic, // 프로필 이미지
+            userId: payload.username, // JWT 토큰에서 username 가져오기
+            profilePic: null, // 프로필 이미지 없을 경우 null 처리
             content: newComment,
             createdAt: new Date().toISOString().split("T")[0], // YYYY-MM-DD 형식
             numOfReply: 0,
@@ -271,7 +287,7 @@ const FoodDetail = () => {
                 {recipeData.flavor.length > 0 ? recipeData.flavor.map((flavor, index) => <p key={index}>#{flavor}</p>) : <p>#맛 정보 없음</p>}
               </div>
             </div>
-            <F.ScrapBox onClick={toggleScrap}>
+            <F.ScrapBox onClick={toggleScrap} style={{ color: isScrapped ? "#fff" : "#fcb01b" }}>
               <img src={isScrapped ? saveBtn : EmptySave} alt="스크랩 버튼" />
               <span>{scrapCount}</span>
             </F.ScrapBox>
