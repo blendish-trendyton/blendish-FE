@@ -349,9 +349,13 @@ export const Information = styled.div`
 
 export const CommentInputBox = styled.div`
   display: flex;
-  position: fixed; /* 하단에 고정 */
-  bottom: 25px; /* 화면의 맨 아래로 위치 */
-  z-index: 1000; /* 다른 요소 위에 표시 */
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
   input {
     border-radius: 5px;
     width: 295.233px;

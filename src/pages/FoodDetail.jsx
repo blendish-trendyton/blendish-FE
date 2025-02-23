@@ -199,60 +199,72 @@ const FoodDetail = () => {
     }
   };
 
-  // 댓글 전송 함수 수정
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
 
     const token = localStorage.getItem("user_token");
     if (!token) {
-      console.error("토큰이 없습니다. 로그인 필요");
+      console.error("🚨 토큰이 없습니다. 로그인 필요");
       alert("로그인이 필요합니다.");
       navigate("/login");
       return;
     }
 
-    console.log("전송할 댓글 데이터:", newComment);
-    console.log("전송할 recipeId:", Number(recipeId));
+    // `recipeId`와 `parentCommentId`를 Long 타입으로 변환하여 JSON 객체로 전송
+    const requestBody = {
+      recipeId: Number(recipeId), // Long 타입 변환
+      parentCommentId: null, // 부모 댓글 ID (대댓글이 아닐 경우 null)
+      content: newComment,
+    };
+
+    console.log("📢 전송할 댓글 데이터:", requestBody);
 
     try {
       const response = await fetch("https://junyeongan.store/api/Comment/InsertComment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // JWT 토큰 포함
         },
-        body: JSON.stringify({
-          recipeId: Number(recipeId), // recipeId를 Long 타입으로 변환
-          parentCommentId: null,
-          content: newComment,
-        }),
+        body: JSON.stringify(requestBody), // JSON으로 변환하여 전송
       });
 
-      console.log("서버 응답 상태 코드:", response.status);
+      console.log("📢 서버 응답 상태 코드:", response.status);
+
+      if (response.status === 403) {
+        console.error("🚨 403 오류 발생: 인증이 필요합니다.");
+        localStorage.removeItem("user_token");
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        navigate("/login");
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("댓글 추가 API 응답:", result);
+      console.log("📢 댓글 추가 API 응답:", result);
 
       if (result.status === 200) {
+        // UI에서 새로운 댓글 추가
         setComments((prevComments) => [
           {
-            commentId: prevComments.length + 1,
+            commentId: prevComments.length + 1, // 임시 ID (서버에서 실제 ID 부여됨)
             userId: payload.username, // JWT 토큰에서 username 가져오기
             profilePic: null, // 프로필 이미지 없을 경우 null 처리
             content: newComment,
             createdAt: new Date().toISOString().split("T")[0], // YYYY-MM-DD 형식
             numOfReply: 0,
           },
-          ...prevComments,
+          ...prevComments, // 기존 댓글 유지
         ]);
         setNewComment(""); // 입력 필드 초기화
+      } else {
+        console.error("🚨 서버 응답이 정상적이지 않음:", result);
       }
     } catch (error) {
-      console.error("댓글 작성 실패:", error.message);
+      console.error("🚨 댓글 작성 실패:", error.message);
     }
   };
 
@@ -316,7 +328,7 @@ const FoodDetail = () => {
       <F.CommentBox>
         <div className="comment-header">
           <h4>댓글</h4>
-          <p onClick={() => navigate(`/commentMore/${recipeId}`)}>댓글 더보기</p>
+          <p onClick={() => navigate(`/commentMore/${recipeId}`)}>더보기 ></p>
         </div>
 
         <img src={grayUnderLine} alt="댓글 구분선" className="commentSec"></img>
