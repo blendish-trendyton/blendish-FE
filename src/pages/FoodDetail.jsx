@@ -360,7 +360,7 @@ const FoodDetail = () => {
           <p onClick={() => navigate(`/commentMore/${recipeId}`)}>더보기 ></p>
         </div>
 
-        <img src={grayUnderLine} alt="댓글 구분선" className="commentSec"></img>
+        {/* <img src={grayUnderLine} alt="댓글 구분선" className="commentSec"></img> */}
         {/* 댓글 입력창 추가 */}
         <F.CommentInputBox>
           <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요." />
