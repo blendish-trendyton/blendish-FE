@@ -42,10 +42,30 @@ export const Title = styled.div`
   }
 `;
 
+export const Box = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+`;
+
 export const List = styled.div`
   margin-top: 27px;
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 두 개의 열 */
   gap: 11px 15px; /* [세로 간격] 11px, [가로 간격] 15px */
   width: fit-content; /* 내용에 맞게 크기 조절 (필요 시 변경 가능) */
+`;
+
+export const RecipeItem = styled.div`
+  width: 165px;
+  height: 166px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  background: url(<path-to-image>) lightgray 50% / cover no-repeat;
+
+  img {
+    width: 165px;
+    height: 166px;
+    border-radius: 5px;
+  }
 `;

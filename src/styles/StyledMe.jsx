@@ -210,64 +210,52 @@ export const Myrecs = styled.div`
   width: fit-content; /* 내용에 맞게 크기 조절 (필요 시 변경 가능) */
 `;
 
-export const Rec1 = styled.div`
+export const Rec1 = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "isLast", // DOM으로 전달 방지
+})`
   width: 165px;
   height: 166px;
   flex-shrink: 0;
   border-radius: 5px;
-  background: #d5d5d5;
-`;
-export const Rec2 = styled.div`
-  width: 165px;
-  height: 166px;
-  flex-shrink: 0;
-  border-radius: 5px;
-  background: #d5d5d5;
-`;
-export const Rec3 = styled.div`
-  width: 165px;
-  height: 166px;
-  flex-shrink: 0;
-  border-radius: 5px;
-  background: #d5d5d5;
-`;
-export const Rec4 = styled.div`
-  width: 165px;
-  height: 166px;
-  flex-shrink: 0;
-  border-radius: 5px;
+  background: ${({ isLast, image }) =>
+    isLast && image ? `url(${image}) center/cover no-repeat` : "#d5d5d5"};
   position: relative;
-  background: ${({ image }) =>
-    image ? `url(${image}) center/cover no-repeat` : "#d5d5d5"};
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 
-  /* 🔹 이미지가 있을 경우 흐리게 처리 */
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* 반투명 어두운 배경 */
-    // backdrop-filter: blur(3px); /* 흐림 효과 추가 */
+  img {
+    width: 165px;
+    height: 166px;
+    flex-shrink: 0;
     border-radius: 5px;
   }
 
-  /* 🔹 "더보기" 텍스트 스타일 */
-  span {
-    position: relative; /* 흐림 효과에서 분리 */
-    z-index: 1; /* 텍스트를 맨 위로 배치 */
-    color: #fff;
-    font-family: "Instrument Sans";
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-  }
+  /* 마지막 요소에만 흐림 효과 적용 */
+  ${({ isLast }) =>
+    isLast &&
+    `
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 5px;
+    }
+
+    span {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-family: "Instrument Sans";
+      font-size: 24px;
+      font-weight: 600;
+    }
+  `}
 `;
 
 export const Hr3 = styled.div`
@@ -311,7 +299,45 @@ export const Sar1 = styled.div`
   height: 166px;
   flex-shrink: 0;
   border-radius: 5px;
-  background: #d5d5d5;
+  background: ${({ isLast, image }) =>
+    isLast && image ? `url(${image}) center/cover no-repeat` : "#d5d5d5"};
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  img {
+    width: 165px;
+    height: 166px;
+    flex-shrink: 0;
+    border-radius: 5px;
+  }
+
+  /* 마지막 요소에만 흐림 효과 적용 */
+  ${({ isLast }) =>
+    isLast &&
+    `
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* 반투명 어두운 배경 */
+      border-radius: 5px;
+    }
+
+    span {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      font-family: "Instrument Sans";
+      font-size: 24px;
+      font-weight: 600;
+    }
+  `}
 `;
 
 export const Sar2 = styled.div`

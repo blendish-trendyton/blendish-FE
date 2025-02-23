@@ -6,6 +6,22 @@ import Dropdown from "./RecipeDrop"; // ✅ 공통 드롭다운 컴포넌트 가
 import TasteDropdown from "./TasteDrop";
 import axios from "../api/axiosConfig"; // ✅ 설정된 axios 가져오기
 
+// ✅ Axios 인스턴스 생성 및 토큰 자동 포함 설정
+const api = axios.create({
+  baseURL: "https://junyeongan.store/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("user_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 const RecipeMaker = () => {
   // ✅ 각 드롭다운 선택 상태 관리
   const [category, setCategory] = useState("");
@@ -51,7 +67,6 @@ const RecipeMaker = () => {
   const handleSpicyChange = (selected) => {
     setSpiceLevel(selected === "선호하지 않음" ? 0 : selected.length);
   };
-
   // ✅ Form 제출 (POST 요청)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,6 +83,7 @@ const RecipeMaker = () => {
       return; // 🚨 입력이 안 된 경우 요청을 보내지 않음
     }
 
+    // ✅ 요청 데이터 준비
     const requestData = {
       category,
       cookingTime: parseInt(cookingTime),
@@ -77,9 +93,18 @@ const RecipeMaker = () => {
     };
 
     try {
-      const response = await axios.post("/api/gpt/recipe", requestData);
+      // ✅ 로컬 스토리지에서 토큰 가져오기
+      const token = localStorage.getItem("user_token");
+
+      // ✅ POST 요청 시 헤더에 토큰 포함
+      const response = await axios.post("/gpt/recipe", requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
       console.log("✅ 성공:", response.data);
-      // alert("레시피가 성공적으로 생성되었습니다!");
       navigate(`/customrecipe`);
     } catch (error) {
       console.error("❌ 에러:", error);
