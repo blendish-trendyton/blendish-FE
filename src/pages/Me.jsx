@@ -14,7 +14,7 @@ const api = axios.create({
 
 // ✅ 모든 요청에 토큰 자동 포함
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem("user_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -59,55 +59,62 @@ const Me = () => {
     tastePreference: [],
   });
 
-  // // ✅ 사용자 데이터 조회 요청
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const response = await api.get("/user/me");
-  //       if (response.data) {
-  //         setUserData({
-  //           userId: response.data.userId,
-  //           hometown: response.data.hometown,
-  //           country: response.data.country,
-  //           profilePic: response.data.profilePic,
-  //           tastePreference: response.data.tastePreference || [],
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user data:", error);
-  //     }
-  //   };
+  // ✅ 마이 레시피 & 저장된 레시피 상태 관리
+  const [myRecipes, setMyRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState([]);
 
-  //   fetchUserData();
-  // }, []);
-
+  // ✅ 사용자 정보, 마이 레시피, 저장된 레시피 데이터 요청
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // ✅ 로컬 스토리지에서 토큰 가져오기
-        const token = localStorage.getItem("authToken");
-        console.log("📌 요청에 사용된 토큰:", token); // ✅ 콘솔에 토큰 출력
+        const token = localStorage.getItem("user_token");
 
-        // ✅ 토큰이 있으면 헤더에 추가
-        const response = await api.get("/user/me", {
+        // 사용자 정보 요청
+        const userResponse = await api.get("/user/me", {
           headers: {
-            Authorization: `Bearer ${token}`, // 토큰 포함
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
 
-        // ✅ 응답 데이터 처리
-        if (response.data) {
+        if (userResponse.data && userResponse.data.data) {
           setUserData({
-            userId: response.data.userId,
-            hometown: response.data.hometown,
-            country: response.data.country,
-            profilePic: response.data.profilePic,
-            tastePreference: response.data.tastePreference || [],
+            userId: userResponse.data.data.userId,
+            hometown: userResponse.data.data.hometown,
+            country: userResponse.data.data.country,
+            profilePic: userResponse.data.data.profilePic,
+            tastePreference: userResponse.data.data.tastePreference || [],
           });
         }
+
+        // 마이 레시피 요청
+        const myRecipesResponse = await api.get("/user/myrecipes", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (myRecipesResponse.data && myRecipesResponse.data.data) {
+          const recentMyRecipes = myRecipesResponse.data.data
+            .slice(-4)
+            .reverse();
+          setMyRecipes(recentMyRecipes);
+        }
+
+        // 저장된 레시피 요청
+        const savedRecipesResponse = await api.get("/user/savedrecipes", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (savedRecipesResponse.data && savedRecipesResponse.data.data) {
+          const recentSavedRecipes = savedRecipesResponse.data.data
+            .slice(-4)
+            .reverse();
+          setSavedRecipes(recentSavedRecipes);
+        }
       } catch (error) {
-        console.error("❌ 사용자 정보 요청 중 오류 발생:", error);
+        console.error("❌ 데이터 요청 중 오류 발생:", error);
       }
     };
 
@@ -116,16 +123,16 @@ const Me = () => {
 
   // ✅ 모든 요청에 토큰 자동 포함
   api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("user_token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = ` ${token}`;
     }
     return config;
   });
 
   // ✅ 로그아웃 함수 추가
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // 토큰 제거
+    localStorage.removeItem("user_token"); // 토큰 제거
     navigate("/"); // 메인페이지로 이동
   };
 
@@ -158,35 +165,61 @@ const Me = () => {
         </M.Logout>
       </M.Info>
       <M.Hr1></M.Hr1>
+
+      {/* ✅ 마이 레시피 섹션 */}
       <M.Myr>
         <M.Myrecipe>나의 레시피</M.Myrecipe>
         <M.Myrecs>
-          <M.Rec1></M.Rec1>
-          <M.Rec2></M.Rec2>
-          <M.Rec3></M.Rec3>
-          <M.Rec4
-            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
-            onClick={gomyrec}
-          >
-            <span>더보기 ></span>
-          </M.Rec4>
+          {myRecipes.map((recipe, index) => (
+            <M.Rec1
+              onClick={gomyrec}
+              key={index}
+              image={recipe.foodImage}
+              isLast={index === myRecipes.length - 1} // 마지막 요소만 스타일 적용
+            >
+              {index === myRecipes.length - 1 ? (
+                <>
+                  <span>더보기 ></span>
+                </>
+              ) : (
+                <img
+                  src={recipe.foodImage}
+                  alt={`레시피 이미지 ${index + 1}`}
+                />
+              )}
+            </M.Rec1>
+          ))}
         </M.Myrecs>
       </M.Myr>
+
       <M.Hr3 />
+
+      {/* ✅ 저장된 레시피 섹션 */}
       <M.Sar>
         <M.Savedrecipe>저장된 레시피</M.Savedrecipe>
         <M.Savedrecs>
-          <M.Sar1></M.Sar1>
-          <M.Sar2></M.Sar2>
-          <M.Sar3></M.Sar3>
-          <M.Sar4
-            image={`${process.env.PUBLIC_URL}/images/Food.svg`}
-            onClick={savedrec}
-          >
-            <span>더보기 ></span>
-          </M.Sar4>
+          {savedRecipes.map((recipe, index) => (
+            <M.Sar1
+              onClick={savedrec}
+              key={index}
+              image={recipe.foodImage}
+              isLast={index === savedRecipes.length - 1} // 마지막 요소만 스타일 적용
+            >
+              {index === savedRecipes.length - 1 ? (
+                <>
+                  <span>더보기 ></span>
+                </>
+              ) : (
+                <img
+                  src={recipe.foodImage}
+                  alt={`레시피 이미지 ${index + 1}`}
+                />
+              )}
+            </M.Sar1>
+          ))}
         </M.Savedrecs>
       </M.Sar>
+
       <M.Nav>
         <M.Hr />
         <M.Item>
