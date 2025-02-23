@@ -40,37 +40,18 @@ const Login = () => {
         const token = response.headers.get("Authorization");
         console.log("🔑 응답 헤더에서 가져온 토큰:", token);
 
-        let result = null;
-
-        // 응답 본문(JSON) 파싱 (일부 서버는 본문이 없을 수도 있음)
-        const responseText = await response.text();
-        if (responseText) {
-          try {
-            result = JSON.parse(responseText);
-            console.log("서버 응답 JSON:", result);
-          } catch (jsonError) {
-            console.warn("JSON 파싱 오류. 응답이 JSON이 아님.");
-            console.warn("서버 응답 (텍스트):", responseText);
-          }
-        } else {
-          console.warn("⚠️ 서버 응답이 비어 있음 (Content-Length: 0)");
-        }
-
-        // 토큰 저장 (Bearer 제거 후 저장)
         if (token) {
           const cleanToken = token.replace("Bearer ", ""); // `Bearer` 제거
           localStorage.setItem("user_token", cleanToken);
+
+          // 로그인 후 사용자 정보 불러오기
+          await fetchUserData(cleanToken);
         } else {
           console.warn("⚠️ `Authorization` 헤더에 토큰이 없음!");
         }
 
-        // 사용자 정보 저장 (응답 본문이 있을 경우)
-        if (result && result.data) {
-          localStorage.setItem("userData", JSON.stringify(result.data));
-        }
-
-        // alert("로그인 성공!");
-        navigate("/"); // 로그인 후 이동할 페이지
+        // 로그인 성공 후 페이지 이동
+        navigate("/");
         return;
       }
 
@@ -79,6 +60,35 @@ const Login = () => {
     } catch (error) {
       console.error("로그인 오류:", error);
       setErrorMessage(`서버 오류: ${error.message}`);
+    }
+  };
+
+  // 사용자 정보 가져와서 저장하는 함수
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch("https://junyeongan.store/api/user/me/details", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`사용자 정보 가져오기 실패! 상태 코드: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("🧑‍💻 사용자 정보 응답:", result);
+
+      if (result.status === 200 && result.data) {
+        // 사용자 정보를 로컬 스토리지에 저장
+        localStorage.setItem("userData", JSON.stringify(result.data));
+      } else {
+        console.warn("⚠️ 사용자 정보가 없습니다.");
+      }
+    } catch (error) {
+      console.error("사용자 정보 가져오기 실패:", error.message);
     }
   };
 

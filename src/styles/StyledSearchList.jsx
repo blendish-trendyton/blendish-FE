@@ -169,3 +169,5 @@ export const FoodName = styled.div`
   color: #202020;
   text-align: center;
 `;
+
+export const SearchResults = styled.div``;

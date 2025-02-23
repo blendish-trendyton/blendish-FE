@@ -13,7 +13,7 @@ import defaultFoodImage from "../assets/svg/mainFood1.svg";
 import CommentLine from "../assets/svg/CommentLine.svg";
 import sendBtn from "../assets/svg/sendBtn.svg";
 import grayUnderLine from "../assets/svg/grayUnderLine.svg";
-
+import EmptySave from "../assets/svg/EmptySave.svg";
 const FoodDetail = () => {
   const navigate = useNavigate();
   const { recipeId } = useParams(); // URL에서 recipeId 가져오기
@@ -24,6 +24,8 @@ const FoodDetail = () => {
   const [errorMessage, setErrorMessage] = useState(""); // 오류 메시지 저장
   const [comments, setComments] = useState([]); // 댓글 목록
   const [newComment, setNewComment] = useState(""); // 새 댓글 입력 값
+  const [isScrapped, setIsScrapped] = useState(false); // 스크랩 상태
+  const [scrapCount, setScrapCount] = useState(0); // 스크랩한 사람 수
 
   // 로컬스토리지에서 토큰 가져오기
   const token = localStorage.getItem("user_token");
@@ -31,7 +33,7 @@ const FoodDetail = () => {
   // 로그인되지 않은 경우 로그인 페이지로 리디렉트
   useEffect(() => {
     if (!token) {
-      console.warn("🔑 토큰이 없음, 로그인 페이지로 이동");
+      console.warn("토큰 없음, 로그인 페이지로 이동");
       navigate("/login");
     }
   }, [token, navigate]);
@@ -61,6 +63,8 @@ const FoodDetail = () => {
           setIsLiked(result.data.hart); // 서버에서 받은 좋아요 상태 적용
           setLikeCount(result.data.likeCount); // 좋아요 개수 설정
           setComments(result.data.comments || []); //댓글 데이터 추가
+          setIsScrapped(result.data.scrapped); // 스크랩 여부
+          setScrapCount(result.data.scrapCount || 0); // 스크랩한 사람 수 설정
         } else {
           setErrorMessage("레시피 데이터를 불러올 수 없습니다.");
         }
@@ -77,13 +81,22 @@ const FoodDetail = () => {
 
   // 좋아요 버튼 클릭 시 API 요청
   const toggleLike = async () => {
-    if (!token) return;
+    const token = localStorage.getItem("user_token");
+
+    if (!token) {
+      console.error(" 토큰이 없습니다. 로그인 필요");
+      navigate("/login");
+      return;
+    }
+
+    if (!recipeId) {
+      console.error(" recipeId 값이 없습니다.");
+      return;
+    }
+
+    const url = isLiked ? "https://junyeongan.store/api/community/deleteLike" : "https://junyeongan.store/api/community/updateLike";
 
     try {
-      const url = isLiked ? "https://junyeongan.store/api/community/deleteLike" : "https://junyeongan.store/api/community/updateLike";
-
-      console.log(`🛠 좋아요 요청 보냄 (isLiked: ${isLiked}), recipeId: ${recipeId}`);
-
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -93,15 +106,23 @@ const FoodDetail = () => {
         body: JSON.stringify({ recipeId: Number(recipeId) }),
       });
 
+      console.log("서버 응답 상태 코드:", response.status);
+
+      if (response.status === 403) {
+        console.error("403 오류 발생: 인증이 필요합니다.");
+        localStorage.removeItem("user_token"); //  만료된 토큰 삭제
+        navigate("/login");
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("❤️ 좋아요 API 응답:", result);
+      console.log("좋아요 API 응답:", result);
 
       if (result.status === 200) {
-        // ✅ 상태 업데이트 개선
         setIsLiked((prevLiked) => {
           const newLikedState = !prevLiked;
           setLikeCount((prevCount) => (newLikedState ? prevCount + 1 : prevCount - 1));
@@ -115,34 +136,103 @@ const FoodDetail = () => {
     }
   };
 
-  // 댓글 전송 함수
-  const handleCommentSubmit = async () => {
-    if (!newComment.trim()) return; // 빈 댓글 방지
+  //스크랩 전송 함수
+  const toggleScrap = async () => {
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 필요");
+      navigate("/login");
+      return;
+    }
+
+    const url = isScrapped ? "https://junyeongan.store/api/community/deleteScrap" : "https://junyeongan.store/api/community/updateScrap";
+
+    console.log(`스크랩 요청 보냄 (isScrapped: ${isScrapped}), recipeId: ${recipeId}`);
 
     try {
-      const response = await fetch(`https://junyeongan.store/api/community/addComment`, {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          recipeId: Number(recipeId),
-          parentCommentId: null, // 부모 댓글 없음 (최상위 댓글)
-          content: newComment,
-        }),
+        body: JSON.stringify({ recipeId: Number(recipeId) }),
       });
+
+      if (response.status === 403) {
+        console.error("403 오류 발생: 인증이 필요합니다.");
+        localStorage.removeItem("user_token");
+        navigate("/login");
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("📝 댓글 추가 API 응답:", result);
+      console.log("스크랩 API 응답:", result);
 
       if (result.status === 200) {
-        // 댓글 목록에 추가
-        setComments((prevComments) => [...prevComments, { userId: "현재 사용자", content: newComment, createdAt: new Date().toISOString() }]);
+        setIsScrapped((prev) => {
+          const newState = !prev;
+          setScrapCount((prevCount) => (newState ? prevCount + 1 : prevCount - 1));
+          return newState;
+        });
+      }
+    } catch (error) {
+      console.error("스크랩 처리 실패:", error.message);
+    }
+  };
+
+  // 댓글 전송 함수
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return; // 빈 댓글 방지
+
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (!userData) {
+      console.error("사용자 정보가 없습니다.");
+      return;
+    }
+
+    const requestBody = {
+      recipeId: Number(recipeId),
+      parentCommentId: null,
+      content: newComment,
+    };
+
+    console.log("댓글 전송 요청 데이터:", requestBody);
+
+    try {
+      const response = await fetch("https://junyeongan.store/api/Comment/InsertComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      console.log("서버 응답 상태 코드:", response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("댓글 추가 API 응답:", result);
+
+      if (result.status === 200) {
+        setComments((prevComments) => [
+          {
+            commentId: prevComments.length + 1,
+            userId: userData.username, // 사용자 이름
+            profilePic: userData.profilePic, // 프로필 이미지
+            content: newComment,
+            createdAt: new Date().toISOString().split("T")[0], // YYYY-MM-DD 형식
+            numOfReply: 0,
+          },
+          ...prevComments,
+        ]);
         setNewComment(""); // 입력 필드 초기화
       }
     } catch (error) {
@@ -181,7 +271,10 @@ const FoodDetail = () => {
                 {recipeData.flavor.length > 0 ? recipeData.flavor.map((flavor, index) => <p key={index}>#{flavor}</p>) : <p>#맛 정보 없음</p>}
               </div>
             </div>
-            <img src={saveBtn} alt="저장 버튼" />
+            <F.ScrapBox onClick={toggleScrap}>
+              <img src={isScrapped ? saveBtn : EmptySave} alt="스크랩 버튼" />
+              <span>{scrapCount}</span>
+            </F.ScrapBox>
           </F.Content>
 
           <F.ReactionBox>

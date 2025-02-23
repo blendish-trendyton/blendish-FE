@@ -37,7 +37,7 @@ export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
   background-image: url(${loginBack});
-  background-size: cover;
+  background-size: contain; /* 비율 유지하면서 요소 안에 맞춤 */
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;

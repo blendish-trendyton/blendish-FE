@@ -2,16 +2,17 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  text-align: center; /* 가로 중앙 정렬 */
+  flex-direction: column;
+  flex-wrap: nowrap;
+  text-align: center;
   position: relative;
   margin: 0 auto;
-  min-height: 100vh;
   padding: 0;
   box-sizing: border-box;
   background: #fff;
   width: 393px;
+  min-height: 100vh;
+
   .startPage {
     width: 100%;
     background-color: #ffb627;
@@ -22,21 +23,21 @@ export const Container = styled.div`
 `;
 
 export const TodayR = styled.div`
-  margin: auto;
   .mainLogo {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    display: block;
+    margin-left: 0; /* 왼쪽 정렬 */
+    margin-top: 10px; /* 오른쪽 여백 자동 */
   }
   h4 {
     font-size: 16px;
     text-align: left;
-    margin: 20px 0;
+    margin: 20px;
   }
   .todayR {
     display: flex;
     justify-content: space-around;
-    gap: 10px;
+    gap: 12px;
+    margin: 20px;
   }
   .recipe-box {
     width: 79px;
@@ -58,13 +59,12 @@ export const Famous = styled.div`
 
   h4 {
     font-size: 16px;
-    position: absolute;
-    left: 30px;
-    top: 250px;
+    text-align: left;
+    margin: 20px;
   }
   .famousR {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     gap: 10px;
     margin-bottom: 40px;
     img {
