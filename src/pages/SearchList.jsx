@@ -11,7 +11,7 @@ import mainFood1 from "../assets/svg/mainFood1.svg";
 import bulgogi2 from "../assets/svg/bulgogi2.svg";
 import bulgogi3 from "../assets/svg/bulgogi3.svg";
 
-const RecipeMore = () => {
+const SearchList = () => {
   const navigate = useNavigate();
   const goHome = () => navigate("/");
   const goBack = () => navigate(-1);
@@ -134,4 +134,4 @@ const RecipeMore = () => {
   );
 };
 
-export default RecipeMore;
+export default SearchList;

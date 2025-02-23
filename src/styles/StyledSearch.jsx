@@ -1,17 +1,17 @@
 import { styled } from "styled-components";
 
 export const Container = styled.div`
-  /* display: flex; */
-  flex-wrap: wrap;
-  justify-content: center;
-  position: relative;
+  display: flex;
+  flex-direction: column; /* 요소들을 위에서 아래로 배치 */
+  /* align-items: center; */
+  width: 393px;
+  min-height: 100vh; /* 화면 전체 높이 유지 */
+  background: #fff;
   margin: 0 auto;
-  min-height: 100vh;
   padding: 0;
   box-sizing: border-box;
-  background: #ebebeb;
-  width: 393px;
-  align-items: center; /* 기본적으로 중앙 정렬 */
+  overflow: hidden;
+
   h4 {
     font-size: 16px;
     text-align: left;
@@ -21,6 +21,7 @@ export const Container = styled.div`
 `;
 
 export const Search = styled.div`
+  position: relative;
   padding: 24px;
   .backBtn {
     width: 10px;

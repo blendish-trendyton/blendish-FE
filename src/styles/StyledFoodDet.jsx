@@ -365,3 +365,27 @@ export const CommentInputBox = styled.div`
     margin-left: 5px;
   }
 `;
+
+export const ScrapBox = styled.div`
+  position: relative; /* 부모 요소 기준 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 25px;
+
+  img {
+    margin: 0;
+    width: 35px;
+    position: relative; /* span이 이를 기준으로 배치됨 */
+  }
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%); /* 정확한 중앙 정렬 */
+    font-size: 14px;
+    font-weight: bold;
+    color: #fcb01b; /* 아이콘 색상과 대비되는 색상 사용 */
+  }
+`;
