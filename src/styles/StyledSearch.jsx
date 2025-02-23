@@ -72,15 +72,20 @@ export const Fdiv = styled.div`
 
 export const FamouseBox = styled.div`
   display: flex;
+  flex-wrap: wrap; /* 한 줄이 넘치면 다음 줄로 이동 */
   width: 100%;
-  justify-content: left;
-  margin-left: 22px;
+  justify-content: space-between; /* 간격을 균등하게 배분 */
+  padding: 0 0 0 15px;
 `;
 
 export const Famouse = styled.div`
-  display: block;
-  margin-right: 40px;
+  display: flex;
+  flex-direction: column; /* 내부 요소를 세로 정렬 */
+  justify-content: center;
+  width: calc(50% - 20px); /* 한 줄에 두 개씩 배치 */
+  text-align: center;
 `;
+
 export const Fcontent = styled.div`
   display: flex;
   align-items: center;
