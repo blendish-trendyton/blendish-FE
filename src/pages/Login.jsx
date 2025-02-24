@@ -38,7 +38,7 @@ const Login = () => {
       if (response.ok) {
         // 헤더에서 `Authorization` 토큰 가져오기
         const token = response.headers.get("Authorization");
-        console.log("🔑 응답 헤더에서 가져온 토큰:", token);
+        console.log("응답 헤더에서 가져온 토큰:", token);
 
         if (token) {
           const cleanToken = token.replace("Bearer ", ""); // `Bearer` 제거
@@ -47,7 +47,7 @@ const Login = () => {
           // 로그인 후 사용자 정보 불러오기
           await fetchUserData(cleanToken);
         } else {
-          console.warn("⚠️ `Authorization` 헤더에 토큰이 없음!");
+          console.warn("`Authorization` 헤더에 토큰이 없음!");
         }
 
         // 로그인 성공 후 페이지 이동
@@ -79,7 +79,7 @@ const Login = () => {
       }
 
       const result = await response.json();
-      console.log("🧑‍💻 사용자 정보 응답:", result);
+      console.log("사용자 정보 응답:", result);
 
       if (result.status === 200 && result.data) {
         // 사용자 정보를 로컬 스토리지에 저장
@@ -95,7 +95,7 @@ const Login = () => {
   return (
     <L.Container>
       <L.Background>
-        <img src={Back} alt="backBtn" onClick={goBack} className="back-btn" />
+        {/* <img src={Back} alt="backBtn" onClick={goBack} className="back-btn" /> */}
         <img src={Logo} alt="blendish_logo" />
         <L.ID>
           <h4>로그인</h4>

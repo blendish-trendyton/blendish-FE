@@ -111,6 +111,11 @@ export const Recipe = styled.div`
     font-size: 15px;
     font-weight: 600;
   }
+  img {
+    width: 337px;
+    height: 337px;
+    border-radius: 5px;
+  }
 `;
 
 export const LocalFlag = styled.div`

@@ -2,14 +2,15 @@ import { styled } from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column; /* 요소들을 위에서 아래로 배치 */
-  align-items: center; /* 가로 중앙 정렬 */
-  width: 393px;
-  min-height: 100vh; /* 화면 전체 높이 유지 */
-  background: #fff;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  position: relative;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  background: #fff;
+  width: 393px;
+  min-height: 140vh;
 `;
 
 export const TopImg = styled.div`
@@ -348,9 +349,14 @@ export const Information = styled.div`
 
 export const CommentInputBox = styled.div`
   display: flex;
-  position: fixed; /* 하단에 고정 */
-  bottom: 25px; /* 화면의 맨 아래로 위치 */
-  z-index: 1000; /* 다른 요소 위에 표시 */
+  position: fixed;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  overflow: scroll;
   input {
     border-radius: 5px;
     width: 295.233px;
@@ -386,6 +392,6 @@ export const ScrapBox = styled.div`
     transform: translate(-50%, -70%); /* 정확한 중앙 정렬 */
     font-size: 14px;
     font-weight: bold;
-    color: #fcb01b; /* 아이콘 색상과 대비되는 색상 사용 */
+    /* color: #fcb01b; 아이콘 색상과 대비되는 색상 사용 */
   }
 `;

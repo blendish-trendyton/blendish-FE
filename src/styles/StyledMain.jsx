@@ -60,21 +60,25 @@ export const Famous = styled.div`
   h4 {
     font-size: 16px;
     text-align: left;
-    margin: 20px;
+    margin: 0 20px 20px 20px;
   }
+
   .famousR {
     display: flex;
-    justify-content: space-evenly;
-    gap: 10px;
+    flex-wrap: wrap; /* 한 줄이 넘치면 다음 줄로 이동 */
+    justify-content: space-evenly; /* 간격 조정 */
+    row-gap: 20px;
     margin-bottom: 40px;
+
     img {
       width: 160px;
       height: 160px;
       border-radius: 5px;
     }
+
     p {
       font-size: 14px;
-      margin: 10px 0 0 0;
+      margin: 10px 0 0 3px;
       text-align: left; /* 왼쪽 정렬 */
       width: 100%;
     }
@@ -87,7 +91,7 @@ export const Reaction = styled.div`
   img {
     width: 14px !important;
     height: 14px !important;
-    margin: 0 5px 0 0;
+    margin: 0 5px 0 3px;
   }
   span {
     margin: 0 10px 0 0;

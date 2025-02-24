@@ -25,8 +25,11 @@ const SelectPage = () => {
   const options = [
     { value: "salty", label: "짠 맛" },
     { value: "sweet", label: "단 맛" },
+    { value: "sour", label: "신 맛" },
     { value: "spicy", label: "매운 맛" },
-    { value: "savory", label: "담백한 맛" },
+    { value: "umami", label: "감칠 맛" },
+    { value: "plain", label: "담백한 맛" },
+    { value: "oily", label: "기름진 맛" },
   ];
 
   // 페이지 이동
@@ -95,13 +98,16 @@ const SelectPage = () => {
               styles={{
                 control: (base) => ({
                   ...base,
-                  backgroundColor: "transparent", // 투명하게 설정
+                  backgroundColor: "transparent", // 투명 배경
                   border: "none",
                   color: "black",
+                  zIndex: 9999, // 선택 영역도 z-index 적용
                 }),
                 menu: (base) => ({
                   ...base,
                   backgroundColor: "#fff", // 드롭다운 배경색
+                  zIndex: 9999, // 🚀 최상위 레이어로 배치하여 가려지지 않도록 설정
+                  position: "relative",
                 }),
                 option: (base, { isFocused }) => ({
                   ...base,
