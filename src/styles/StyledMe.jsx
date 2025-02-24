@@ -395,6 +395,214 @@ export const Sar4 = styled.div`
   }
 `;
 
+export const Hr4 = styled.div`
+  width: 389px;
+  height: 6px;
+  flex-shrink: 0;
+  background: #eee;
+  margin-top: 18px;
+  margin-bottom: 20px;
+`;
+
+export const Save = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const SaTi = styled.div`
+  color: #000;
+  font-family: "Instrument Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-align: left;
+  margin-left: 30px;
+`;
+
+export const Slist = styled.div`
+  margin-top: 35px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 2개의 열 생성
+  gap: 35px 0px;
+  align-items: center;
+  justify-content: center;
+  place-items: center;
+`;
+
+export const Sl1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+
+  #title {
+    padding-left: 3px;
+    color: #000;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+  }
+
+  #btn {
+    width: 150px;
+    height: 36px;
+    border-radius: 5px;
+    background: #fcb01b;
+    color: #fff;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const Sl2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+
+  #title {
+    padding-left: 3px;
+    color: #000;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+  }
+
+  #btn {
+    width: 150px;
+    height: 36px;
+    border-radius: 5px;
+    background: #fcb01b;
+    color: #fff;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const Sl3 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+
+  #title {
+    padding-left: 3px;
+    color: #000;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+  }
+
+  #btn {
+    width: 150px;
+    height: 36px;
+    border-radius: 5px;
+    background: #fcb01b;
+    color: #fff;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+export const Sl4 = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+
+  #title {
+    padding-left: 3px;
+    color: #000;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+  }
+
+  #btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 36px;
+    border-radius: 5px;
+    background: #fcb01b;
+    color: #fff;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: center;
+  }
+`;
+
+export const Number = styled.div`
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+
+  #black {
+    color: #353535;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  div {
+    color: #b6b6b6;
+    text-align: center;
+    font-family: "Instrument Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
 export const Nav = styled.div`
   position: fixed; /* 하단에 고정 */
   bottom: 0; /* 화면의 맨 아래로 위치 */

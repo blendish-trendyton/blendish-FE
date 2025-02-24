@@ -332,12 +332,14 @@ export const Complete = styled.div`
   justify-content: center;
   display: flex;
 
-  div {
+  button {
     color: #fff;
     font-family: "Instrument Sans";
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    background: transparent;
+    border: none;
   }
 `;

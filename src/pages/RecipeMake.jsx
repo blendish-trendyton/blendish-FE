@@ -6,11 +6,11 @@ import Dropdown from "./RecipeDrop"; // ✅ 공통 드롭다운 컴포넌트 가
 import TasteDropdown from "./TasteDrop";
 import axios from "../api/axiosConfig"; // ✅ 설정된 axios 가져오기
 
-// ✅ Axios 인스턴스 생성 및 토큰 자동 포함 설정
 const api = axios.create({
   baseURL: "https://junyeongan.store/api",
   headers: {
-    "Content-Type": "application/json",
+    Accept: "application/json",
+    "Content-Type": "application/json; charset=utf-8",
   },
 });
 
@@ -61,15 +61,19 @@ const RecipeMaker = () => {
     setTastes(selected);
   };
 
-  // 🔹 Spicy(🌶️ 개수) -> 숫자로 변환
   const handleSpicyChange = (selected) => {
-    setSpiceLevel(selected === "선호하지 않음" ? 0 : selected.length);
+    if (selected === "선호하지 않음") {
+      setSpiceLevel(0); // 명시적으로 0 설정
+    } else {
+      // 선택된 고추 개수만큼 매운 정도 설정
+      const spicyCount = (selected.match(/🌶️/g) || []).length;
+      setSpiceLevel(spicyCount);
+    }
   };
-  // ✅ Form 제출 (POST 요청)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔸 필수 입력 값 확인
     if (
       !category ||
       cookingTime === "원하는 조리 시간을 선택하세요." ||
@@ -78,32 +82,32 @@ const RecipeMaker = () => {
       spiceLevel === 0
     ) {
       alert("모든 창을 입력해주세요!");
-      return; // 🚨 입력이 안 된 경우 요청을 보내지 않음
+      return;
     }
 
-    // ✅ 요청 데이터 준비
     const requestData = {
       category,
-      cookingTime: parseInt(cookingTime),
+      cookingTime,
       difficulty,
       tastes,
       spiceLevel: typeof spiceLevel === "number" ? spiceLevel : 0,
     };
+    console.log("보낼 데이터:", requestData);
 
     try {
-      // ✅ 로컬 스토리지에서 토큰 가져오기
       const token = localStorage.getItem("user_token");
-
-      // ✅ POST 요청 시 헤더에 토큰 포함
-      const response = await axios.post("/gpt/recipe", requestData, {
+      const response = await api.post("/gpt/recipe", requestData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
       });
 
       console.log("✅ 성공:", response.data);
-      navigate(`/customrecipe`);
+
+      // ✅ 레시피 데이터를 전달하며 이동
+      navigate(`/customrecipe`, { state: { recipeData: response.data.data } });
     } catch (error) {
       console.error("❌ 에러:", error);
       alert("레시피 생성에 실패했습니다.");
@@ -138,7 +142,20 @@ const RecipeMaker = () => {
               <input id="puttype" type="text" placeholder="요리 종류를 입력하세요." value={category} onChange={(e) => setCategory(e.target.value)} />
             </R.Type>
             <R.Time>
-              <Dropdown options={["15", "~ 30분", "~ 1시간", "~ 2시간", "2시간 이상"]} selected={cookingTime} setSelected={setCookingTime} multiple={false} />
+
+              <Dropdown
+                options={[
+                  "~ 15분",
+                  "~ 30분",
+                  "~ 1시간",
+                  "~ 2시간",
+                  "2시간 이상",
+                ]}
+                selected={cookingTime}
+                setSelected={setCookingTime}
+                multiple={false}
+              />
+
             </R.Time>
             <R.Level>
               <Dropdown options={["상", "중", "하"]} selected={difficulty} setSelected={setDifficulty} multiple={false} />
@@ -152,8 +169,20 @@ const RecipeMaker = () => {
             </R.Taste>
             <R.Spicy>
               <Dropdown
-                options={["선호하지 않음", "🌶️", "🌶️🌶️", "🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️🌶️"]}
-                selected={typeof spiceLevel === "number" ? "🌶️".repeat(spiceLevel) : spiceLevel}
+
+
+                options={[
+                  "선호하지 않음",
+                  "🌶️",
+                  "🌶️🌶️",
+                  "🌶️🌶️🌶️",
+                  "🌶️🌶️🌶️🌶️",
+                  "🌶️🌶️🌶️🌶️🌶️",
+                ]}
+                selected={
+                  spiceLevel === 0 ? "선호하지 않음" : "🌶️".repeat(spiceLevel)
+                }
+
                 setSelected={handleSpicyChange}
                 multiple={false}
               />

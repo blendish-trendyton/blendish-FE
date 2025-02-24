@@ -605,13 +605,15 @@ export const Upl = styled.div`
   align-items: center;
   justify-content: center;
 
-  div {
+  button {
     color: #fff;
     font-family: "Instrument Sans";
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    background: transparent;
+    border: none;
   }
 `;
 

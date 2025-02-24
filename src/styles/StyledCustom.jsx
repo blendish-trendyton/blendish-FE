@@ -119,6 +119,7 @@ export const List = styled.div`
   background: #fff;
   padding-bottom: 30px;
   padding: 0 auto; /* 그리드 항목 내에서 중앙 정렬 유지 */
+  height: 440px;
 
   /* 마지막 행의 항목이 1개일 경우 왼쪽 정렬 */
   & > *:nth-child(odd):last-child {
@@ -133,13 +134,15 @@ export const Recipe = styled.div`
   gap: 16px;
   text-align: left;
   width: 147px;
+  height: 115px;
   align-items: start;
+  justify-content: space-between; /* 내용 사이 공간 확보 */
 
   #title {
     color: #000;
     text-align: center;
     font-family: "Instrument Sans";
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -165,6 +168,7 @@ export const Gorecipe = styled.div`
   justify-content: center;
   align-items: center;
   margin-left: -2px;
+  margin-top: auto;
 
   div {
     color: #fff;
