@@ -66,15 +66,17 @@ const SearchList = () => {
     <L.Container>
       <L.SearchNext>
         <img src={blackBackBtn} className="backBtn" alt="뒤로가기" onClick={goBack}></img>
-        <input
-          type="text"
-          placeholder="레시피의 제목을 입력하세요."
-          value={searchInput}
-          onChange={handleInputChange}
-          onKeyPress={handleKeyPress}
-          className="recipeBtn"
-        />
-        <img src={searchBtn} alt="레시피 검색"></img>
+        <div className="searchContainer">
+          <input
+            type="text"
+            placeholder="레시피의 제목을 입력하세요."
+            value={searchInput}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+            className="recipeBtn"
+          />
+          <img src={searchBtn} alt="레시피 검색" className="searchIcon"></img>
+        </div>
       </L.SearchNext>
       <L.Result>
         <p>

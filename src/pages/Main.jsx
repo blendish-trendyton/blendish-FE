@@ -65,7 +65,7 @@ const Main = () => {
     fetchTodayRecipes();
   }, [token]);
 
-  // 🔹 인기 레시피 가져오기
+  // 인기 레시피 가져오기
   useEffect(() => {
     if (!token) return;
 

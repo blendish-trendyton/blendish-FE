@@ -25,10 +25,8 @@ api.interceptors.request.use((config) => {
 const RecipeMaker = () => {
   // ✅ 각 드롭다운 선택 상태 관리
   const [category, setCategory] = useState("");
-  const [cookingTime, setCookingTime] =
-    useState("원하는 조리 시간을 선택하세요.");
-  const [difficulty, setDifficulty] =
-    useState("원하는 조리 난이도를 선택하세요.");
+  const [cookingTime, setCookingTime] = useState("원하는 조리 시간을 선택하세요.");
+  const [difficulty, setDifficulty] = useState("원하는 조리 난이도를 선택하세요.");
   const [tastes, setTastes] = useState([]);
   const [spiceLevel, setSpiceLevel] = useState("선호하지 않음"); // 초기값 설정
 
@@ -43,7 +41,7 @@ const RecipeMaker = () => {
   };
 
   const goSearch = () => {
-    navigate(`/searchPageNext`);
+    navigate(`/searchPage`);
   };
   const goMaker = () => {
     navigate(`/recipemaker`);
@@ -125,8 +123,7 @@ const RecipeMaker = () => {
         {isTooltipVisible && (
           <R.Tooltip>
             <div>
-              AI를 기반으로 사용자의 옵션 선택에 따라 기존에 없던 새로운
-              레시피를
+              AI를 기반으로 사용자의 옵션 선택에 따라 기존에 없던 새로운 레시피를
               <br />
               기존의 레시피와 함께 제공합니다. 더욱 다양한 요리를 만들어 보세요!
             </div>
@@ -138,60 +135,25 @@ const RecipeMaker = () => {
         <R.Content>
           <R.Box>
             <R.Type>
-              <input
-                id="puttype"
-                type="text"
-                placeholder="요리 종류를 입력하세요."
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
+              <input id="puttype" type="text" placeholder="요리 종류를 입력하세요." value={category} onChange={(e) => setCategory(e.target.value)} />
             </R.Type>
             <R.Time>
-              <Dropdown
-                options={["15", "~ 30분", "~ 1시간", "~ 2시간", "2시간 이상"]}
-                selected={cookingTime}
-                setSelected={setCookingTime}
-                multiple={false}
-              />
+              <Dropdown options={["15", "~ 30분", "~ 1시간", "~ 2시간", "2시간 이상"]} selected={cookingTime} setSelected={setCookingTime} multiple={false} />
             </R.Time>
             <R.Level>
-              <Dropdown
-                options={["상", "중", "하"]}
-                selected={difficulty}
-                setSelected={setDifficulty}
-                multiple={false}
-              />
+              <Dropdown options={["상", "중", "하"]} selected={difficulty} setSelected={setDifficulty} multiple={false} />
             </R.Level>
             <R.Taste>
               <TasteDropdown
-                options={[
-                  "단 맛",
-                  "짠 맛",
-                  "신 맛",
-                  "감칠 맛",
-                  "기름진 맛",
-                  "담백한 맛",
-                  "매운 맛",
-                ]}
+                options={["단 맛", "짠 맛", "신 맛", "감칠 맛", "기름진 맛", "담백한 맛", "매운 맛"]}
                 selected={tastes}
                 setSelected={handleTasteChange}
               />
             </R.Taste>
             <R.Spicy>
               <Dropdown
-                options={[
-                  "선호하지 않음",
-                  "🌶️",
-                  "🌶️🌶️",
-                  "🌶️🌶️🌶️",
-                  "🌶️🌶️🌶️🌶️",
-                  "🌶️🌶️🌶️🌶️🌶️",
-                ]}
-                selected={
-                  typeof spiceLevel === "number"
-                    ? "🌶️".repeat(spiceLevel)
-                    : spiceLevel
-                }
+                options={["선호하지 않음", "🌶️", "🌶️🌶️", "🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️", "🌶️🌶️🌶️🌶️🌶️"]}
+                selected={typeof spiceLevel === "number" ? "🌶️".repeat(spiceLevel) : spiceLevel}
                 setSelected={handleSpicyChange}
                 multiple={false}
               />
@@ -208,17 +170,11 @@ const RecipeMaker = () => {
         <R.Hr />
         <R.Item>
           <R.Maker>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/MakerY.svg`}
-              alt="메이커"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/MakerY.svg`} alt="메이커" />
             <div>메이커</div>
           </R.Maker>
           <R.Search onClick={goSearch}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Search.svg`}
-              alt="검색"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </R.Search>
           <R.Home onClick={goHome}>
@@ -226,10 +182,7 @@ const RecipeMaker = () => {
             <div>홈</div>
           </R.Home>
           <R.Write onClick={gowrite}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Write.svg`}
-              alt="작성"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Write.svg`} alt="작성" />
             <div>작성</div>
           </R.Write>
           <R.Me onClick={gome}>

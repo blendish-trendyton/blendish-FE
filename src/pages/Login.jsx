@@ -85,7 +85,7 @@ const Login = () => {
         // 사용자 정보를 로컬 스토리지에 저장
         localStorage.setItem("userData", JSON.stringify(result.data));
       } else {
-        console.warn("⚠️ 사용자 정보가 없습니다.");
+        console.warn("사용자 정보가 없습니다.");
       }
     } catch (error) {
       console.error("사용자 정보 가져오기 실패:", error.message);

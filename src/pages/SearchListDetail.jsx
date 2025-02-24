@@ -37,7 +37,7 @@ const SearchListDetail = () => {
       </L.FoodName>
       <L.Result>
         <p>
-          <strong>총 10개</strong> 검색 결과
+          <strong>총 3개</strong> 검색 결과
         </p>
         <L.ResultBox onClick={goLocalRecipe}>
           <img src={bulgogi1}></img>
@@ -47,7 +47,7 @@ const SearchListDetail = () => {
             <div>짭조름하고 달콤한 간장 양념이 깊은 감칠맛을 내며, 부드러운 육질이 매력적인 한국식 가정 요리.</div>
             <M.Reaction style={{ marginBottom: "0" }}>
               <img src={Good} alt="좋아요" style={{ margin: "0 5px 0 0" }} />
-              <span style={{ fontSize: "16px" }}>12</span>
+              <span style={{ fontSize: "16px" }}>5</span>
               <img src={Comment} alt="댓글" />
               <span style={{ fontSize: "16px" }}>3</span>
             </M.Reaction>
@@ -60,9 +60,9 @@ const SearchListDetail = () => {
             <div>참숯 위에서 천천히 구워내는 광양 불고기. 불향이 어우러져 깊고 고소한 맛을 자랑합니다.</div>
             <M.Reaction style={{ marginBottom: "0" }}>
               <img src={Good} alt="좋아요" style={{ margin: "0 5px 0 0" }} />
-              <span style={{ fontSize: "16px" }}>12</span>
-              <img src={Comment} alt="댓글" />
               <span style={{ fontSize: "16px" }}>3</span>
+              <img src={Comment} alt="댓글" />
+              <span style={{ fontSize: "16px" }}>1</span>
             </M.Reaction>
           </div>
         </L.ResultBox>
@@ -73,9 +73,9 @@ const SearchListDetail = () => {
             <div>남은 광양 불고기를 리베이크로 다시 즐기는 간편 레시피! 오븐이나 에어프라이어로 재가열해도 촉촉함을 유지할 수 있어요.</div>
             <M.Reaction style={{ marginBottom: "0" }}>
               <img src={Good} alt="좋아요" style={{ margin: "0 5px 0 0" }} />
-              <span style={{ fontSize: "16px" }}>12</span>
+              <span style={{ fontSize: "16px" }}>4</span>
               <img src={Comment} alt="댓글" />
-              <span style={{ fontSize: "16px" }}>3</span>
+              <span style={{ fontSize: "16px" }}>2</span>
             </M.Reaction>
           </div>
         </L.ResultBox>

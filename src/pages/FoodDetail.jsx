@@ -233,7 +233,7 @@ const FoodDetail = () => {
 
     const token = localStorage.getItem("user_token");
     if (!token) {
-      console.error("🚨 토큰이 없습니다. 로그인 필요");
+      console.error("토큰이 없습니다. 로그인 필요");
       alert("로그인이 필요합니다.");
       navigate("/login");
       return;
@@ -258,10 +258,10 @@ const FoodDetail = () => {
         body: JSON.stringify(requestBody), // JSON으로 변환하여 전송
       });
 
-      console.log("📢 서버 응답 상태 코드:", response.status);
+      console.log("서버 응답 상태 코드:", response.status);
 
       if (response.status === 403) {
-        console.error("🚨 403 오류 발생: 인증이 필요합니다.");
+        console.error("403 오류 발생: 인증이 필요합니다.");
         localStorage.removeItem("user_token");
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
         navigate("/login");
@@ -290,10 +290,10 @@ const FoodDetail = () => {
         ]);
         setNewComment(""); // 입력 필드 초기화
       } else {
-        console.error("🚨 서버 응답이 정상적이지 않음:", result);
+        console.error("서버 응답이 정상적이지 않음:", result);
       }
     } catch (error) {
-      console.error("🚨 댓글 작성 실패:", error.message);
+      console.error("댓글 작성 실패:", error.message);
     }
   };
 

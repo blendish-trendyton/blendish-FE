@@ -94,9 +94,7 @@ const Me = () => {
         });
 
         if (myRecipesResponse.data && myRecipesResponse.data.data) {
-          const recentMyRecipes = myRecipesResponse.data.data
-            .slice(-4)
-            .reverse();
+          const recentMyRecipes = myRecipesResponse.data.data.slice(-4).reverse();
           setMyRecipes(recentMyRecipes);
         }
 
@@ -108,9 +106,7 @@ const Me = () => {
         });
 
         if (savedRecipesResponse.data && savedRecipesResponse.data.data) {
-          const recentSavedRecipes = savedRecipesResponse.data.data
-            .slice(-4)
-            .reverse();
+          const recentSavedRecipes = savedRecipesResponse.data.data.slice(-4).reverse();
           setSavedRecipes(recentSavedRecipes);
         }
       } catch (error) {
@@ -140,11 +136,7 @@ const Me = () => {
     <M.Container>
       <M.Back></M.Back>
       <M.Info>
-        <M.Prof>
-          {userData.profilePic && (
-            <img src={userData.profilePic} alt="Profile" />
-          )}{" "}
-        </M.Prof>
+        <M.Prof>{userData.profilePic && <img src={userData.profilePic} alt="Profile" />} </M.Prof>
         <M.Name>{userData.userId}</M.Name>
         <M.Country>
           <M.Hometown>
@@ -182,10 +174,7 @@ const Me = () => {
                   <span>더보기 ></span>
                 </>
               ) : (
-                <img
-                  src={recipe.foodImage}
-                  alt={`레시피 이미지 ${index + 1}`}
-                />
+                <img src={recipe.foodImage} alt={`레시피 이미지 ${index + 1}`} />
               )}
             </M.Rec1>
           ))}
@@ -210,10 +199,7 @@ const Me = () => {
                   <span>더보기 ></span>
                 </>
               ) : (
-                <img
-                  src={recipe.foodImage}
-                  alt={`레시피 이미지 ${index + 1}`}
-                />
+                <img src={recipe.foodImage} alt={`레시피 이미지 ${index + 1}`} />
               )}
             </M.Sar1>
           ))}
@@ -224,17 +210,11 @@ const Me = () => {
         <M.Hr />
         <M.Item>
           <M.Maker onClick={gomaker}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Maker.svg`}
-              alt="메이커"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Maker.svg`} alt="메이커" />
             <div>메이커</div>
           </M.Maker>
           <M.Search onClick={goSearch}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Search.svg`}
-              alt="검색"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Search.svg`} alt="검색" />
             <div>검색</div>
           </M.Search>
           <M.Home onClick={goHome}>
@@ -242,10 +222,7 @@ const Me = () => {
             <div>홈</div>
           </M.Home>
           <M.Write onClick={gowrite}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/Write.svg`}
-              alt="작성"
-            />
+            <img src={`${process.env.PUBLIC_URL}/images/Write.svg`} alt="작성" />
             <div>작성</div>
           </M.Write>
           <M.Me>
