@@ -88,7 +88,7 @@ const SignUp = () => {
             </S.LoginBox>
           </div>
 
-          <img className={`under-line ${errorMessage ? "no-margin" : ""}`} src={Line} style={{ width: "235px" }} />
+          <img className="under-line" src={Line} alt="underline" style={{ marginBottom: errorMessage ? "5px" : "40px", width: "245px" }} />
           {/* 아이디 중복 확인 메시지 추가 */}
           {errorMessage && <p className="id-check-message">{errorMessage}</p>}
 
@@ -111,7 +111,7 @@ const SignUp = () => {
           </div>
 
           {/* 항상 존재하는 밑줄 */}
-          <img className="under-line" src={Line} />
+          <img className="under-line" src={Line} alt="underline" style={{ marginBottom: errorMessage ? "5px" : "40px" }} />
 
           {/* 비밀번호 오류 메시지 (없을 때도 height 유지) */}
           <div className="error-message-container">{passwordError && <p className="password-error-message">{passwordError}</p>}</div>

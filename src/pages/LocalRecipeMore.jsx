@@ -7,7 +7,12 @@ import home from "../assets/svg/home.svg";
 import CommentLine from "../assets/svg/CommentLine.svg";
 import blackUnderLine from "../assets/svg/blackUnderLine.svg";
 import grayUnderLine from "../assets/svg/grayUnderLine.svg";
-import Recipe1 from "../assets/svg/Recipe1.svg";
+import local1 from "../assets/img/local1.png";
+import local2 from "../assets/img/local2.png";
+import local3 from "../assets/img/local3.png";
+import local4 from "../assets/img/local4.png";
+import local5 from "../assets/img/local5.png";
+import local6 from "../assets/img/local6.png";
 
 const LocalRecipeMore = () => {
   const navigate = useNavigate();
@@ -19,19 +24,20 @@ const LocalRecipeMore = () => {
 
   //   기본 식재료 리스트
   const basicIngredients = [
-    { name: "토마토 소스", amount: "150g" },
-    { name: "양파", amount: "1/3개" },
-    { name: "다진 돼지고기", amount: "100g" },
-    { name: "스파게티 면", amount: "150g" },
-    { name: "파마산 치즈가루", amount: "1 큰술" },
+    { name: "쇠고기", amount: "250g" },
+    { name: "설탕", amount: "1 큰술" },
+    { name: "다진마늘", amount: "1 큰술" },
+    { name: "맛술", amount: "1 큰술" },
+    { name: "간장", amount: "6 큰술" },
+    { name: "매실액", amount: "1 큰술" },
+    { name: "후추", amount: "1/16 큰술" },
   ];
 
   //   현지 식재료 리스트
   const localIngredients = [
     { name: "쇠고기", amount: "250g" },
-    { name: "양파", amount: "1/3개" },
-    { name: "대파", amount: "1/9개" },
-    { name: "간장", amount: "6큰술" },
+    { name: "leak", amount: "1/9개" },
+    { name: "애플사이더 비니거", amount: "1 큰술" },
     { name: "다진마늘", amount: "1 큰술" },
     { name: "참기름", amount: "1 큰술" },
     { name: "깨", amount: "1 큰술" },
@@ -106,12 +112,36 @@ const LocalRecipeMore = () => {
         <img src={blackUnderLine} alt="구분선" />
         <R.Recipe>
           <button>1</button>
-          <img src={Recipe1} alt="조리 과정" />
-          <span>냄비에 물 1L정도를 붓고 강불에서 끓입니다. 물이 끓기 시작하면 소금 1작은술을 넣습니다.</span>
+          <img src={local1} alt="조리 과정" />
+          <span>
+            소고기(등심 또는 채끝) 250g을 얇게 썬 후 키친타월로 핏물을 제거한 후에 소고기, 마늘, 후추, 진간장, 설탕, 맛술, 참기름을 넣고 조물조물 재워두어
+            냉장실에 30분 보관합니다.
+          </span>
         </R.Recipe>
         <R.Recipe>
           <button>2</button>
-          <img src={Recipe1} alt="조리 과정" />
+          <img src={local2} alt="조리 과정" />
+          <span>프라이팬에 식용유를 넣고 데워줍니다.</span>
+        </R.Recipe>
+        <R.Recipe>
+          <button>3</button>
+          <img src={local3} alt="조리 과정" />
+          <span>프라이팬이 뜨거워지면 센 불에서 고기를 볶아 줍니다.</span>
+        </R.Recipe>
+        <R.Recipe>
+          <button>4</button>
+          <img src={local4} alt="조리 과정" />
+          <span>고기에 물기가 생기지 않게 계속 강불에서 빠르게 볶아 주세요.</span>
+        </R.Recipe>
+        <R.Recipe>
+          <button>5</button>
+          <img src={local5} alt="조리 과정" />
+          <span>계속 강불에서 물기 생기지 않게 빠르게 볶아 줍니다. 고기가 바삭될 때 까지 계속 볶아 줍니다.</span>
+        </R.Recipe>
+        <R.Recipe>
+          <button>6</button>
+          <img src={local6} alt="조리 과정" />
+          <span>바삭불고기 완성입니다.</span>
         </R.Recipe>
       </R.RecipeBox>
     </R.Container>

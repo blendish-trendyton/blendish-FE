@@ -37,7 +37,7 @@ export const Background = styled.div`
   width: 100%;
   min-height: 100vh;
   background-image: url(${loginBack});
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -69,95 +69,69 @@ export const ID = styled.div`
   color: #fff;
   margin-left: 37px;
   font-family: "Instrument Sans";
+
   .inputBox {
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
+
     input {
       color: #fff;
       font-size: 18px;
       margin: 0 20px 0 10px;
       width: 160px;
       height: 25px;
-      display: flex;
-      align-self: flex-end;
       background-color: transparent;
       border: none;
       outline: none;
+
       &::placeholder {
         color: #fff;
       }
     }
+
     p {
       color: #fff;
       font-size: 18px;
-      font-style: normal;
-      line-height: normal;
       opacity: 0.85;
     }
+
     .check-icon {
       width: 20px;
       height: 20px;
       margin: 0;
     }
   }
+
   h4 {
     margin-bottom: 66px;
     font-size: 32px;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
   }
 
-  img {
+  /* 밑줄 스타일 */
+  .under-line {
     width: 319px;
     height: 1px;
-    margin: 5px 0 44px 0;
-  }
-  .error-message {
-    color: #ff4d4d;
-    font-size: 13px;
-    margin-top: 5px;
-  }
-  select {
-    width: 60%;
-    height: 35px;
-    border: none;
-    background-color: transparent; /* 박스를 투명하게 설정 */
-    outline: none;
-    font-size: 16px;
-    color: white; /* 선택된 글씨 색상을 흰색으로 설정 */
-    appearance: none; /* 기본 UI 제거 (아이콘 등) */
-    padding-left: 10px;
+    display: block;
+    margin-top: 0;
+    margin-bottom: ${(props) => (props.hasError ? "5px" : "40px")}; /* 에러 메시지가 있으면 줄 간격 축소 */
   }
 
-  /* 선택 옵션 스타일 */
-  select option {
-    background-color: black; /* 옵션 드롭다운 배경색 */
-    color: white; /* 옵션 글자색 */
-  }
-  /* 아이디 중복 확인 메시지 스타일 */
+  /* 아이디 중복 확인 메시지 */
   .id-check-message {
     color: #ff4d4d;
     font-size: 13px;
     margin-bottom: 20px;
   }
 
-  /* 기본 줄 스타일 (위치 고정) */
-  .under-line {
-    width: 319px;
-    height: 1px;
-    display: block;
-  }
-
-  /* 에러 메시지 컨테이너 (높이 유지) */
+  /* 비밀번호 오류 메시지 컨테이너 */
   .error-message-container {
-    height: 16px; /* 항상 일정한 높이 유지 */
+    height: 16px;
     display: flex;
     align-items: center;
   }
 
-  /* 비밀번호 오류 메시지 스타일 */
+  /* 비밀번호 오류 메시지 */
   .password-error-message {
     color: #ff4d4d;
     font-size: 13px;
@@ -177,7 +151,7 @@ export const LoginBox = styled.div`
   align-items: center;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
-  margin-top: 22px;
+  margin-top: 42px;
 
   span {
     color: #fff;

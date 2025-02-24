@@ -35,65 +35,51 @@ export const Container = styled.div`
   }
 `;
 
-export const Search = styled.div`
-  padding: 24px;
-  .backBtn {
-    width: 10px;
-    height: 19px;
-    position: absolute;
-    left: 37px;
-    top: 34px;
-  }
-  input {
-    box-sizing: border-box;
-    border-radius: 5px;
-    border: 1.5px solid #ddd;
-    width: 348px;
-    height: 41px;
-    padding: 14px;
-    font-weight: 500;
-    font-size: 14px;
-    &::placeholder {
-      color: #bbb;
-    }
-  }
-
-  img {
-    position: absolute;
-    right: 37px;
-    top: 34px;
-  }
-`;
-
 export const SearchNext = styled.div`
   padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   .backBtn {
     width: 10px;
     height: 19px;
-    position: absolute;
-    left: 30px;
-    top: 34px;
+    margin-right: 15px;
   }
+
+  /* 검색 바를 감싸는 부모 div */
+  .searchContainer {
+    position: relative;
+    width: 314px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* 입력창 */
   .recipeBtn {
-    box-sizing: border-box;
+    width: 100%;
+    height: 41px;
+    padding: 10px 40px 10px 14px; /* 🔹 오른쪽 여백 추가 (아이콘 공간 확보) */
     border-radius: 5px;
     border: 1.5px solid #ddd;
-    width: 314px;
-    height: 41px;
-    padding: 14px;
     font-weight: 500;
     font-size: 14px;
-    position: absolute;
-    right: 20px;
+    box-sizing: border-box;
 
     &::placeholder {
       color: #bbb;
     }
   }
-  img {
+
+  /* 검색 버튼 아이콘 (입력창 내부) */
+  .searchIcon {
     position: absolute;
-    right: 37px;
-    top: 34px;
+    right: 12px; /* 🔹 오른쪽 여백 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
   }
 `;
 
@@ -142,6 +128,7 @@ export const ResultBox = styled.div`
       margin-bottom: auto; /* 위의 텍스트 요소를 위쪽으로 밀어내기 */
     }
     button {
+      cursor: pointer;
       margin: 10px 0;
       color: #fff;
       background-color: #fcb01b;

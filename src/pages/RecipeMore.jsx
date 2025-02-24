@@ -104,8 +104,8 @@ const RecipeMore = () => {
               recipeData.ingredients.map((ingredient, index) => (
                 <React.Fragment key={index}>
                   <R.IngredientList>
-                    <span>{ingredient.name}</span>
                     <strong>{ingredient.amount}</strong>
+                    <span>{ingredient.name}</span>
                   </R.IngredientList>
                   <img src={grayUnderLine} alt="구분선" />
                 </React.Fragment>

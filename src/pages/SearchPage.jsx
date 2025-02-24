@@ -41,12 +41,12 @@ const SearchPage = () => {
         }
 
         const result = await response.json();
-        console.log("🔥 인기 검색어 API 응답:", result);
+        console.log("인기 검색어 API 응답:", result);
 
         if (result.status === 200 && Array.isArray(result.data)) {
           setPopularSearches(result.data); // 데이터 저장
         } else {
-          console.error("🚨 인기 검색어 데이터 형식이 올바르지 않음");
+          console.error("인기 검색어 데이터 형식이 올바르지 않음");
         }
       } catch (error) {
         console.error("인기 검색어 가져오기 실패:", error.message);
@@ -62,12 +62,12 @@ const SearchPage = () => {
     navigate(`/searchList/detail?query=${encodeURIComponent(searchInput.trim())}`);
   };
 
-  // ✅ 인기 검색어 클릭 시 검색 결과 페이지로 이동
+  // 인기 검색어 클릭 시 검색 결과 페이지로 이동
   const handlePopularSearchClick = (query) => {
     navigate(`/searchList/detail?query=${encodeURIComponent(query)}`);
   };
 
-  // ✅ 엔터 키 입력 시 검색 실행
+  // 엔터 키 입력 시 검색 실행
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
@@ -78,7 +78,6 @@ const SearchPage = () => {
   const goMe = () => navigate(`/me`);
   const goWrite = () => navigate(`/write`);
   const goMaker = () => navigate(`/recipemaker`);
-
   return (
     <S.Container>
       {/* 검색 입력 필드 */}
@@ -88,6 +87,7 @@ const SearchPage = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           onKeyPress={handleKeyPress} // 🔹 엔터 키 이벤트 추가
+          onClick={() => navigate("/SearchPageNext")} // 🔹 클릭 시 바로 이동
         />
         <img src={searchBtn} alt="레시피 검색" onClick={handleSearch} />
       </S.Search>
@@ -108,7 +108,7 @@ const SearchPage = () => {
         <h4>인기 검색어</h4>
       </S.Fdiv>
 
-      {/* ✅ 인기 검색어 목록 */}
+      {/* 인기 검색어 목록 */}
       <S.FamouseBox>
         {popularSearches.length > 0 ? (
           popularSearches.map((item, index) => (

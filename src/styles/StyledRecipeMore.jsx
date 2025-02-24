@@ -78,6 +78,7 @@ export const IngredientList = styled.div`
   justify-content: space-between;
   font-size: 18px;
   margin-top: 10px;
+  padding: 0 7px;
   strong {
     font-weight: 500;
   }

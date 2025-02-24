@@ -16,8 +16,9 @@ const RecipeMore = () => {
   const goBack = () => navigate(-1);
   const gome = () => navigate(`/me`);
   const gowrite = () => navigate(`/write`);
-  const goSearch = () => navigate(`/searchPageNext`);
+  const goSearch = () => navigate(`/searchList`);
   const goMaker = () => navigate(`/recipemaker`);
+
   //  검색 기록 상태
   const [searchHistory, setSearchHistory] = useState(["불고기", "김치볶음밥", "타코불고기"]);
 
@@ -65,16 +66,18 @@ const RecipeMore = () => {
     <S.Container>
       <S.Section>
         <S.SearchNext>
-          <img src={blackBackBtn} className="backBtn" alt="뒤로가기"></img>
-          <input
-            type="text"
-            placeholder="레시피의 제목을 입력하세요."
-            value={searchInput}
-            onChange={handleInputChange}
-            onKeyPress={handleKeyPress}
-            className="recipeBtn"
-          />
-          <img src={searchBtn} alt="레시피 검색"></img>
+          <img src={blackBackBtn} className="backBtn" alt="뒤로가기" onClick={goBack}></img>
+          <div className="searchContainer">
+            <input
+              type="text"
+              placeholder="레시피의 제목을 입력하세요."
+              value={searchInput}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              className="recipeBtn"
+            />
+            <img src={searchBtn} alt="레시피 검색" className="searchIcon" onClick={goSearch} />
+          </div>
         </S.SearchNext>
 
         {/*  검색 기록이 있을 때만 렌더링 */}
@@ -82,7 +85,7 @@ const RecipeMore = () => {
           <S.SearchBox>
             <S.SearchIn>
               <h4>최근 검색어</h4>
-              <span style={{ margin: "40px 23px 0 0", cursor: "pointer" }} onClick={clearHistory}>
+              <span style={{ margin: "0 33px 0 0", cursor: "pointer" }} onClick={clearHistory}>
                 전체삭제
               </span>
             </S.SearchIn>
@@ -92,16 +95,16 @@ const RecipeMore = () => {
               <S.SearchIn key={index}>
                 <S.MenuBox onClick={() => handleSearchClick(item)}>
                   <img src={menuSearchBtn} alt="검색 아이콘"></img>
-                  <span>{item}</span>
+                  <span style={{ cursor: "pointer" }}>{item}</span>
                 </S.MenuBox>
-                <img src={searchDelete} alt="삭제" style={{ cursor: "pointer" }} onClick={() => deleteItem(index)} />
+                <img src={searchDelete} alt="삭제" style={{ cursor: "pointer", margin: "0 33px 0 0" }} onClick={() => deleteItem(index)} />
               </S.SearchIn>
             ))}
           </S.SearchBox>
         )}
 
-        <img src={grayUnderLine} style={{ width: "100%" }} alt="구분선"></img>
-        <p style={{ padding: "8px 26px", color: "#6A6A6A" }}>자동 저장 끄기</p>
+        <img src={grayUnderLine} style={{ width: "100%", marginTop: "20px" }} alt="구분선"></img>
+        <p style={{ padding: "0 26px 8px 24px", color: "#6A6A6A", fontSize: "12px" }}>자동 저장 끄기</p>
       </S.Section>
 
       <M.Nav>
