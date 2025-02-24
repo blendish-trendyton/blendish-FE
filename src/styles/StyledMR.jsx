@@ -45,7 +45,7 @@ export const Title = styled.div`
 export const Box = styled.div`
   align-items: center;
   display: flex;
-  justify-content: center;
+  justify-content: center;  
 `;
 
 export const List = styled.div`

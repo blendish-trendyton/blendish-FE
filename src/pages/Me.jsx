@@ -220,6 +220,37 @@ const Me = () => {
         </M.Savedrecs>
       </M.Sar>
 
+      <M.Hr4 />
+      <M.Save>
+        <M.SaTi>저장된 커스텀 레시피</M.SaTi>
+        <M.Slist>
+          <M.Sl1>
+            <div id="title">꿀 마늘 버터 토스트</div>
+            <div id="btn">레시피 보기</div>
+          </M.Sl1>
+          <M.Sl2>
+            <div id="title">치즈 인절미 토스트</div>
+            <div id="btn">레시피 보기</div>
+          </M.Sl2>
+          <M.Sl3>
+            <div id="title">고구마 치즈 스콘</div>
+            <div id="btn">레시피 보기</div>
+          </M.Sl3>
+          <M.Sl4>
+            <div id="title">옥수수 콘 브레드</div>
+            <div id="btn">레시피 보기</div>
+          </M.Sl4>
+        </M.Slist>
+        <M.Number>
+          <img src={`${process.env.PUBLIC_URL}/images/Left.svg`} />
+          <div id="black">1</div>
+          <div>2</div>
+          <div>3</div>
+          <div>4</div>
+          <img src={`${process.env.PUBLIC_URL}/images/Right.svg`} />
+        </M.Number>
+      </M.Save>
+
       <M.Nav>
         <M.Hr />
         <M.Item>
