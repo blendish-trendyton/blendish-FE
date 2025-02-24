@@ -63,10 +63,9 @@ const RecipeMaker = () => {
     setTastes(selected);
   };
 
-  // 🔹 Spicy(🌶️ 개수) -> 숫자로 변환
   const handleSpicyChange = (selected) => {
     if (selected === "선호하지 않음") {
-      setSpiceLevel(0); // "선호하지 않음"이면 0으로 설정
+      setSpiceLevel(0); // 명시적으로 0 설정
     } else {
       // 선택된 고추 개수만큼 매운 정도 설정
       const spicyCount = (selected.match(/🌶️/g) || []).length;
@@ -95,6 +94,7 @@ const RecipeMaker = () => {
       tastes,
       spiceLevel: typeof spiceLevel === "number" ? spiceLevel : 0,
     };
+    console.log("보낼 데이터:", requestData);
 
     try {
       const token = localStorage.getItem("user_token");
