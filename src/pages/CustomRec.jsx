@@ -1,8 +1,24 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as C from "../styles/StyledCustom";
 import axios from "axios";
+
+const api = axios.create({
+  baseURL: "https://junyeongan.store/api",
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json; charset=utf-8",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("user_token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 const Customrecipe = () => {
   const navigate = useNavigate();
@@ -15,54 +31,86 @@ const Customrecipe = () => {
     navigate(`/`);
   };
 
-  const [recipeData, setRecipeData] = useState(null);
-
-  useEffect(() => {
-    // 🔹 백엔드에서 데이터 가져오기
-    const fetchRecipe = async () => {
-      try {
-        const response = await axios.get("/api/gpt/recipe");
-        setRecipeData(response.data.data); // API 응답에서 'data' 객체 가져옴
-      } catch (error) {
-        console.error("❌ 레시피 데이터를 불러오는 데 실패했습니다.", error);
-      }
-    };
-
-    fetchRecipe();
-  }, []);
+  const location = useLocation();
+  const [recipeData, setRecipeData] = useState(
+    location.state?.recipeData || null
+  );
 
   if (!recipeData) {
     return <C.Container>로딩 중...</C.Container>;
   }
 
-  // 🔹 데이터 변환
+  console.log(recipeData);
 
+  // 🔹 데이터 변환
   const formattedData = [
-    { label: "카테고리", value: recipeData.request.category },
-    { label: "조리 시간", value: `~${recipeData.request.cookingTime}분` },
+    { value: recipeData.request.category },
+    { value: recipeData.request.cookingTime },
     {
-      label: "매운 정도",
+      label: "",
       value:
         recipeData.request.spiceLevel === 0
           ? "선호하지 않음"
           : "🌶️".repeat(recipeData.request.spiceLevel),
     },
     ...recipeData.request.tastes.map((taste) => ({
-      label: "맛",
+      label: "",
       value: taste,
     })),
   ];
 
-  const parsedRecipes = recipeData.generatedRecipe.split("\n\n").map((item) => {
-    const match = item.match(/\[(.*?)\]/); // 🔥 대괄호 안의 제목만 추출
-    const title = match ? match[1] : "제목 없음";
-    const content = item.split("요약:")[1]?.trim() || "내용 없음";
-    return { title, content };
-  });
+  const generatedRecipeText = recipeData.generatedRecipe;
 
-  // 🔹 특정 레시피 페이지로 이동하는 함수 (title 전달)
-  const gorec = (title) => {
-    navigate("/recipedet", { state: { title } }); // 🔥 title 값을 함께 전송
+  // ✅ 도입부 텍스트 제거 (### 또는 숫자 시작 기준)
+  const startIndex = generatedRecipeText.search(/###|^\d+\./m);
+  const cleanedData = generatedRecipeText.slice(startIndex);
+
+  // ✅ 레시피 분리 (### 또는 숫자 기준으로 분리)
+  const recipeBlocks = cleanedData
+    .split(/(?:###\s+|\n(?=\d+\.\s))/)
+    .filter((block) => block.trim() !== "");
+
+  const parsedRecipes = recipeBlocks
+    .map((item, index) => {
+      console.log(`🔥 레시피 블록 [${index + 1}]:`, item);
+
+      // ✅ 제목 추출: ### 이후 제목 또는 숫자 이후 제목
+      const titleMatch = item.match(/^(?:\d+\.\s+)?([^\n]+)/);
+      const title = titleMatch ? titleMatch[1].trim() : `레시피 ${index + 1}`;
+
+      // ✅ 요약 추출 (요약: ~ 재료: 사이)
+      const contentMatch = item.match(/요약:\s*(.*?)\s*- 재료:/s);
+      const content = contentMatch ? contentMatch[1].trim() : "요약 내용 없음";
+
+      // ✅ 재료 추출 (재료: ~ 재료 팁: 또는 조리 순서: 사이)
+      const ingredientsMatch = item.match(
+        /재료:\s*([\s\S]*?)(?=- 재료 팁:|- 조리 순서:|$)/s
+      );
+      const ingredients = ingredientsMatch
+        ? ingredientsMatch[1].trim()
+        : "재료 정보 없음";
+
+      // ✅ 전체 내용 추출 (재료부터 끝까지)
+      const fullContentMatch = item.match(/재료:\s*([\s\S]*)/);
+      const fullContent = fullContentMatch
+        ? fullContentMatch[1].trim()
+        : "전체 내용 없음";
+
+      return {
+        title,
+        content,
+        ingredients,
+        fullContent,
+      };
+    })
+    .filter((recipe) => recipe.title && recipe.content) // ❌ 제목과 요약이 없는 경우 제외
+    .slice(0, 4); // ✅ 최대 4개만 추출
+
+  console.log("✅ 최종 추출된 레시피 목록:", parsedRecipes);
+
+  // 🔹 특정 레시피 페이지로 이동하는 함수 (전체 레시피 데이터 전달)
+  const gorec = (recipe) => {
+    navigate("/recipedet", { state: { recipe } }); // 🔥 전체 데이터 전송
   };
 
   return (
@@ -87,9 +135,7 @@ const Customrecipe = () => {
       <C.Hash>
         {formattedData.map((info, index) => (
           <C.Cate key={index}>
-            <div>
-              {info.label}: {info.value}
-            </div>
+            <div>{info.value}</div>
           </C.Cate>
         ))}
       </C.Hash>
@@ -103,15 +149,19 @@ const Customrecipe = () => {
 
         {/* 🔹 Recipe 리스트 (grid 적용) */}
         <C.List>
-          {parsedRecipes.map((recipe, index) => (
-            <C.Recipe key={index}>
-              <div id="title">{recipe.title}</div>
-              <div id="content">{recipe.content}</div>
-              <C.Gorecipe onClick={gorec}>
-                <div>레시피 보기</div>
-              </C.Gorecipe>
-            </C.Recipe>
-          ))}
+          {parsedRecipes && parsedRecipes.length > 0 ? (
+            parsedRecipes.map((recipe, index) => (
+              <C.Recipe key={index}>
+                <div id="title">{recipe.title}</div>
+                <div id="content">{recipe.content}</div>
+                <C.Gorecipe onClick={() => gorec(recipe)}>
+                  <div>레시피 보기</div>
+                </C.Gorecipe>
+              </C.Recipe>
+            ))
+          ) : (
+            <div>레시피 데이터가 없습니다.</div> // 데이터가 없을 때 출력
+          )}
         </C.List>
       </C.Result>
     </C.Container>
