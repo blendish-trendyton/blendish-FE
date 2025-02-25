@@ -101,6 +101,18 @@ export const ID = styled.div`
       margin: 0;
     }
   }
+  .select {
+    select {
+      color: #fff;
+      font-size: 18px;
+      margin: 0 20px 0 10px;
+      width: 300px;
+      height: 25px;
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+  }
 
   h4 {
     margin-bottom: 66px;

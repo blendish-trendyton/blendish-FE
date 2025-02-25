@@ -395,3 +395,5 @@ export const ScrapBox = styled.div`
     /* color: #fcb01b; 아이콘 색상과 대비되는 색상 사용 */
   }
 `;
+
+export const Reply = styled.div``;
