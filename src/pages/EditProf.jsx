@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as E from "../styles/StyledEP";
 import EditDropdown from "./EditDropdown"; // ✅ 공통 드롭다운 컴포넌트 가져오기
 import EditTasteDropdown from "./EditTasteDropdown";
@@ -10,7 +10,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://junyeongan.store/api", // 기본 API 주소 설정
   headers: {
-    "Content-Type": "application/json",
+    Accept: "application/json", // ✅ 서버 응답 형식 명시
   },
 });
 
@@ -33,6 +33,10 @@ const EditProf = () => {
   });
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 전달받은 비밀번호 가져오기
+  const updatedPassword = location.state?.updatedPassword || "";
 
   const goback = () => {
     navigate(-1);
@@ -46,28 +50,29 @@ const EditProf = () => {
     navigate(`/`);
   };
 
+  const gome = () => {
+    alert("사용자 정보가 성공적으로 수정되었습니다.");
+    navigate(`/me`);
+  };
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // ✅ 로컬 스토리지에서 토큰 가져오기
         const token = localStorage.getItem("user_token");
         console.log("📌 요청에 사용된 토큰:", token);
 
-        // ✅ 새로운 API 엔드포인트 요청
         const response = await api.get("/user/me/details", {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         });
 
-        // ✅ 응답 데이터 구조에 맞게 데이터 처리
         const userData = response.data.data || response.data;
-        console.log("응답 받은 사용자 데이터:", userData);
-
         if (userData) {
           setUserData({
             userId: userData.userId || "",
+            userPw: updatedPassword,
             email: userData.email || "",
             hometown: userData.hometown || "",
             country: userData.country || "",
@@ -79,7 +84,6 @@ const EditProf = () => {
               : [],
           });
 
-          // ✅ 맛 취향 및 매운 맛 정도 설정
           if (userData.tastePreference.length > 0) {
             setSelectedTaste(
               Array.isArray(userData.tastePreference)
@@ -128,43 +132,64 @@ const EditProf = () => {
     e.preventDefault();
 
     const token = localStorage.getItem("user_token");
+    console.log("📌 전송 전 토큰 확인:", token);
     const formData = new FormData();
 
+    // ✅ tastePreference 데이터 포맷 변경
+    const tastePreferenceFormatted = selectedTaste.map((taste) => ({
+      taste,
+      spicyLevel: taste === "spicy" ? convertSpicyLevel(selectedSpicy) : null,
+    }));
+
+    // ✅ 전송할 사용자 데이터 생성
     const userInfo = {
       userId: userData.userId,
+      userPw: updatedPassword,
       email: userData.email,
       hometown: userData.hometown,
       country: userData.country,
-      tastePreference: [
-        {
-          taste: selectedTaste,
-          spicyLevel: convertSpicyLevel(selectedSpicy),
-        },
-      ],
+      tastePreference: tastePreferenceFormatted,
     };
 
+    console.log("📤 전송할 사용자 정보:", userInfo);
+
+    // ✅ JSON 데이터를 application/json 형식으로 명확히 전송
     formData.append(
       "user",
       new Blob([JSON.stringify(userInfo)], { type: "application/json" })
     );
-    if (uploadedFile) {
-      formData.append("profilePic", uploadedFile);
+
+    // ✅ profilePic 필드에 빈 파일 형태로 multipart/form-data 전송
+    formData.append(
+      "profilePic",
+      new File([""], "empty.jpg", { type: "image/jpeg" })
+    );
+
+    // ✅ 전송되는 FormData 내용 확인 (디버깅용)
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
 
     try {
+      // ✅ 실제 요청 보내기 (Content-Type 명시하지 않음)
       const response = await api.put("/user/update", formData, {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // ✅ Content-Type 제거 (자동 설정)
         },
+        withCredentials: true, // CORS 문제 해결
       });
+
+      console.log("✅ 서버 응답:", response);
 
       if (response.status === 200) {
         alert("사용자 정보가 성공적으로 수정되었습니다.");
         navigate("/");
       }
     } catch (error) {
-      console.error("❌ 사용자 정보 수정 실패:", error);
+      console.error(
+        "❌ 사용자 정보 수정 실패:",
+        error.response ? error.response.data : error
+      );
       alert("정보 수정에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -287,8 +312,8 @@ const EditProf = () => {
         </E.Box>
         <E.Submit>
           <E.Hr />
-          <E.Complete>
-            <button type="submit">수정 완료</button>
+          <E.Complete onClick={gome}>
+            <button>수정 완료</button>
           </E.Complete>
         </E.Submit>
       </form>

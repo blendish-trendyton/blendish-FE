@@ -210,6 +210,23 @@ export const Go = styled.div`
   }
 `;
 
+export const LoadingOverlay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffb31f;
+  height: 645px;
+
+  div {
+    color: #fff;
+    font-family: "Instrument Sans";
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+`;
+
 export const Nav = styled.div`
   position: fixed; /* 하단에 고정 */
   bottom: 0; /* 화면의 맨 아래로 위치 */
