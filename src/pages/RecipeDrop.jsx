@@ -34,8 +34,8 @@ const Dropdown = ({ options, selected, setSelected, multiple }) => {
         {multiple
           ? Array.isArray(selected) && selected.length > 0
             ? selected.join(", ") // 선택된 옵션 표시 (쉼표로 구분)
-            : "원하는 맛 취향을 선택하세요."
-          : selected || "원하는 맛 취향을 선택하세요."}
+            : "매운 맛 정도를 선택하세요."
+          : selected || "매운 맛 정도를 선택하세요."}
         <img
           src={`${process.env.PUBLIC_URL}/images/${
             isOpen ? "Upbtn.svg" : "Downbtn.svg"

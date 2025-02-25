@@ -20,62 +20,61 @@ const Recipedet = () => {
     navigate(`/`);
   };
 
-  const [recipeData, setRecipeData] = useState(null);
-
   const location = useLocation();
-  const { title } = location.state || {}; // Customrecipe에서 넘긴 제목 정보
+  const { recipe } = location.state || {}; // 🔥 전달받은 레시피 데이터
 
-  useEffect(() => {
-    // 🔹 특정 레시피 데이터를 가져오기
-    const fetchRecipe = async () => {
-      try {
-        const response = await axios.get("/api/gpt/recipe");
-        const recipes = response.data.data.generatedRecipe
-          .split("\n\n") // 두 줄 개행 기준으로 나눔
-          .find((item) => item.includes(`[${title}]`)); // 해당 제목을 포함하는 부분 찾기
-
-        if (!recipes) {
-          console.error("❌ 해당 레시피를 찾을 수 없습니다.");
-          return;
-        }
-
-        setRecipeData(recipes);
-      } catch (error) {
-        console.error("❌ 레시피 데이터를 불러오는 데 실패했습니다.", error);
-      }
-    };
-
-    if (title) {
-      fetchRecipe();
-    }
-  }, [title]);
-
-  if (!recipeData) {
+  if (!recipe) {
     return <R.Container>로딩 중...</R.Container>;
   }
-
-  // 🔹 `재료:` 부분에서 음식과 단위 분리
-  const ingredientsMatch = recipeData.match(
-    /재료:\s*(.*?)(?=\n- 조리 순서:|\n- 난이도:|\n- 요약:)/
+  // 🔍 재료 데이터 추출 (재료 팁 전까지 추출)
+  const ingredientsMatch = recipe.fullContent.match(
+    /- ([\s\S]*?)(?=- 재료 팁:|- 조리 순서:)/
   );
-  const ingredients = ingredientsMatch ? ingredientsMatch[1].split(", ") : [];
+  const ingredients = ingredientsMatch
+    ? ingredientsMatch[1]
+        .trim()
+        .split(/\n\s*-\s*/) // 각 재료 항목을 줄바꿈과 '-'로 분리
+        .map((item) => item.trim()) // 공백 제거
+        .filter((item) => item.length > 0) // 빈 항목 제거
+    : [];
 
+  // 🔍 재료 데이터 정제 (음식명과 수량 구분)
   const formattedIngredients = ingredients.map((item) => {
-    const match = item.match(/(.+?)\s([\d\D]+)/); // '음식명 단위' 패턴 추출
-    return {
-      food: match ? match[1] : item, // 음식명
-      quantity: match ? match[2] : "", // 단위 (예: '1컵', '약간')
-    };
+    // 1️⃣ 음식명과 수량을 ":" 기준으로 분리
+    const splitByColon = item.split(/:\s*/);
+
+    if (splitByColon.length === 2) {
+      return {
+        food: splitByColon[0].trim(), // 음식명
+        quantity: splitByColon[1].trim(), // 수량
+      };
+    } else {
+      // 2️⃣ ":"이 없는 경우 → 마지막 단어를 음식명으로 추출, 앞부분은 수량 처리
+      const words = item.split(" ");
+      const food = words.pop(); // 마지막 단어를 음식명으로 설정
+      const quantity = words.join(" "); // 나머지는 수량으로 처리
+      return {
+        food: food,
+        quantity: quantity || "약간", // 수량 없으면 기본값으로 '약간'
+      };
+    }
   });
 
-  // 🔹 `조리 순서:` 부분에서 조리 단계 추출
-  const stepsMatch = recipeData.match(/조리 순서:\s*(.*)/);
+  // 🔍 조리 순서 추출 (fullContent에서 직접 추출)
+  const stepsMatch = recipe.fullContent.match(/조리 순서:\s*([\s\S]*)/);
   const steps = stepsMatch
-    ? stepsMatch[1].split("\n").map((step, index) => ({
-        number: index + 1, // 순서 번호
-        content: step.replace(/^\d+\.\s*/, ""), // 숫자 제거 후 내용만
-      }))
+    ? stepsMatch[1]
+        .trim()
+        .split(/\n/) // 줄바꿈 기준으로 분리
+        .map((step, index) => ({
+          number: index + 1, // 순서 번호
+          content: step.replace(/^\s*\d+[\.\s]*/, ""), // 🔥 숫자, 점, 공백 모두 제거
+        }))
     : [];
+
+  console.log("레시피 내용:", recipe.fullContent);
+  console.log("원본 재료 목록:", ingredients);
+  console.log("정제된 재료 데이터:", formattedIngredients);
 
   return (
     <R.Container>
@@ -94,7 +93,7 @@ const Recipedet = () => {
         />
       </R.Nav>
       <R.Title>
-        <div>{title}</div>
+        <div>{recipe.title}</div>
         <img
           src={`${process.env.PUBLIC_URL}/images/${
             isActive ? "BookmarkY.svg" : "Bookmark.svg"

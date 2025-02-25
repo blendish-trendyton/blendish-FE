@@ -36,8 +36,7 @@ const TasteDropdown = ({ options, selected, setSelected }) => {
         <DropdownList>
           {options.map((option) => (
             <DropdownItem key={option} onClick={() => handleSelect(option)}>
-              <CheckBox $isChecked={selected.includes(option)} />{" "}
-              {/* ✅ 수정된 부분 */}
+              <CheckBox isChecked={selected.includes(option)} />
               <label>{option}</label>
             </DropdownItem>
           ))}
