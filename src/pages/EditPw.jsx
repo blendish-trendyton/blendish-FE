@@ -26,34 +26,31 @@ const EditPW = () => {
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [confirmMatchError, setConfirmMatchError] = useState(false);
 
-  useEffect(() => {
-    const fetchUserPassword = async () => {
-      try {
-        const token = localStorage.getItem("user_token");
-        const response = await api.get("/user/me", {
+  const handleCurrentPasswordChange = async (e) => {
+    const value = e.target.value;
+    setCurrentPassword(value);
+
+    try {
+      const token = localStorage.getItem("user_token");
+      const response = await api.post(
+        "/user/check",
+        { password: value },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        console.log("전체 응답 데이터:", response.data);
-        if (response.data && response.data.userPw) {
-          setSavedPassword(response.data.userPw);
-          console.log("가져온 비밀번호:", response.data.userPw);
-        } else {
-          console.error("응답 데이터에 비밀번호가 없습니다.");
         }
-      } catch (error) {
-        console.error("❌ 비밀번호 정보 가져오기 실패:", error);
+      );
+
+      if (response.data && response.data.data === true) {
+        setPasswordMatchError(false);
+      } else {
+        setPasswordMatchError(true);
       }
-    };
-
-    fetchUserPassword();
-  }, []);
-
-  const handleCurrentPasswordChange = (e) => {
-    const value = e.target.value;
-    setCurrentPassword(value);
-    setPasswordMatchError(value !== savedPassword);
+    } catch (error) {
+      console.error("❌ 비밀번호 확인 실패:", error);
+      setPasswordMatchError(true);
+    }
   };
 
   const handleNewPasswordChange = (e) => {
@@ -97,7 +94,6 @@ const EditPW = () => {
           <div>현재 비밀번호</div>
           <input
             type="text"
-            defaultValue={savedPassword}
             value={currentPassword}
             onChange={handleCurrentPasswordChange}
           />
