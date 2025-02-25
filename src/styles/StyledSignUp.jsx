@@ -77,7 +77,7 @@ export const ID = styled.div`
     input {
       color: #fff;
       font-size: 18px;
-      margin: 0 20px 0 10px;
+      margin: 10px 20px 0 10px;
       width: 160px;
       height: 25px;
       background-color: transparent;
@@ -105,8 +105,7 @@ export const ID = styled.div`
     select {
       color: #fff;
       font-size: 18px;
-      margin: 0 20px 0 10px;
-      width: 300px;
+      margin: 10px 20px 0 10px;
       height: 25px;
       background-color: transparent;
       border: none;

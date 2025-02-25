@@ -377,3 +377,5 @@ export const CommentInputBox = styled.div`
     margin-left: 5px;
   }
 `;
+
+export const Reply = styled.div``;
