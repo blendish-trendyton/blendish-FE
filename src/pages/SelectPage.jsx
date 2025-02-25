@@ -95,16 +95,17 @@ const SelectPage = () => {
                   border: "none",
                   color: "black",
                   zIndex: 9999,
+                  fontSize: "18px",
                 }),
                 menu: (base) => ({
                   ...base,
                   backgroundColor: "#fff",
                   zIndex: 9999,
-                  position: "absolute", // ✅ 다른 요소 밀림 방지
+                  position: "absolute", //  다른 요소 밀림 방지
                 }),
                 menuPortal: (base) => ({
                   ...base,
-                  zIndex: 9999, // ✅ 메뉴를 최상위 레이어로 올리기
+                  zIndex: 9999, //  메뉴를 최상위 레이어로 올리기
                 }),
                 option: (base, { isFocused }) => ({
                   ...base,
@@ -125,9 +126,49 @@ const SelectPage = () => {
           </div>
           <img className="under-line" src={Line} />
 
-          {/* 🔹 항상 매운 맛 정도 선택 가능하도록 수정 */}
-          <div className="inputBox">
-            <select value={spicyLevel} onChange={(e) => setSpicyLevel(e.target.value)}>
+          {/* 항상 매운 맛 정도 선택 가능하도록 수정 */}
+          <div className="select">
+            <select
+              value={spicyLevel}
+              onChange={(e) => setSpicyLevel(e.target.value)}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  backgroundColor: "transparent",
+                  border: "none",
+                  color: "black",
+                  zIndex: 9999,
+                  fontSize: "18px",
+                }),
+                menu: (base) => ({
+                  ...base,
+                  backgroundColor: "#fff",
+                  zIndex: 9999,
+                  position: "absolute", //  다른 요소 밀림 방지
+                }),
+                menuPortal: (base) => ({
+                  ...base,
+                  zIndex: 9999, //  메뉴를 최상위 레이어로 올리기
+                }),
+                option: (base, { isFocused }) => ({
+                  ...base,
+                  backgroundColor: isFocused ? "#f8d7da" : "#fff",
+                  color: "black",
+                  padding: "10px",
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }),
+                multiValue: (base) => ({
+                  ...base,
+                  backgroundColor: "#ededed",
+                  color: "black",
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "#fff",
+                }),
+              }}
+            >
               <option value="" hidden>
                 매운 맛 정도
               </option>

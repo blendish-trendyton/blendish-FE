@@ -34,6 +34,12 @@ const FoodDetail = () => {
   console.log("JWT Payload:", payload);
 
   useEffect(() => {
+    if (!token) {
+      console.error("토큰이 없습니다. 로그인 필요");
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
     const fetchRecipeDetail = async () => {
       if (!token) return;
 
@@ -68,10 +74,10 @@ const FoodDetail = () => {
       }
     };
 
-    // 🔹 댓글 가져오는 함수 추가
+    //댓글 가져오기
     const fetchComments = async () => {
       try {
-        const response = await fetch(`https://junyeongan.store/api/Comment/ParentsComment?recipeId=${recipeId}`, {
+        const response = await fetch(`https://junyeongan.store/api/Comment/AllComment?recipeId=${recipeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -79,27 +85,24 @@ const FoodDetail = () => {
           },
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
 
         const result = await response.json();
-        console.log("📝 댓글 API 응답:", result);
+        console.log("📝 전체 댓글 API 응답:", result);
 
         if (result.status === 200) {
           setComments(result.data || []);
         } else {
-          setErrorMessage("댓글 데이터를 불러올 수 없습니다.");
+          console.error("댓글 데이터를 불러올 수 없습니다.");
         }
       } catch (error) {
-        console.error("❌ 댓글 불러오기 실패:", error.message);
-        setErrorMessage("서버 오류가 발생했습니다.");
+        console.error("전체 댓글 불러오기 실패:", error.message);
       }
     };
 
     if (recipeId) {
       fetchRecipeDetail();
-      fetchComments(); // 🔹 댓글 불러오는 함수 호출
+      fetchComments();
     }
   }, [recipeId, token]);
 
@@ -227,7 +230,6 @@ const FoodDetail = () => {
       console.error("스크랩 처리 실패:", error.message);
     }
   };
-
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
 
@@ -239,29 +241,28 @@ const FoodDetail = () => {
       return;
     }
 
-    // `recipeId`와 `parentCommentId`를 Long 타입으로 변환하여 JSON 객체로 전송
     const requestBody = {
       recipeId: Number(recipeId), // Long 타입 변환
-      parentCommentId: null, // 부모 댓글 ID (대댓글이 아닐 경우 null)
-      content: newComment,
+      parentCommentId: null, // 대댓글이 아니므로 null
+      content: newComment, // String 타입
     };
 
-    console.log("📢 전송할 댓글 데이터:", requestBody);
+    console.log("전송할 데이터:", requestBody);
 
     try {
       const response = await fetch("https://junyeongan.store/api/Comment/InsertComment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // JWT 토큰 포함
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(requestBody), // JSON으로 변환하여 전송
+        body: JSON.stringify(requestBody), // 🔹 JSON 객체로 변환하여 전송
       });
 
       console.log("서버 응답 상태 코드:", response.status);
 
       if (response.status === 403) {
-        console.error("403 오류 발생: 인증이 필요합니다.");
+        console.error(" 403 오류 발생: 인증이 필요합니다.");
         localStorage.removeItem("user_token");
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
         navigate("/login");
@@ -269,11 +270,11 @@ const FoodDetail = () => {
       }
 
       if (!response.ok) {
-        throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
+        throw new Error(` HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log("📢 댓글 추가 API 응답:", result);
+      console.log("댓글 추가 API 응답:", result);
 
       if (result.status === 200) {
         // UI에서 새로운 댓글 추가
@@ -288,6 +289,7 @@ const FoodDetail = () => {
           },
           ...prevComments, // 기존 댓글 유지
         ]);
+
         setNewComment(""); // 입력 필드 초기화
       } else {
         console.error("서버 응답이 정상적이지 않음:", result);
@@ -360,22 +362,39 @@ const FoodDetail = () => {
           <p onClick={() => navigate(`/commentMore/${recipeId}`)}>더보기 ></p>
         </div>
 
-        {/* <img src={grayUnderLine} alt="댓글 구분선" className="commentSec"></img> */}
-        {/* 댓글 입력창 추가 */}
         <F.CommentInputBox>
           <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요." />
-          <img src={sendBtn} onClick={handleCommentSubmit}></img>
+          <img src={sendBtn} onClick={handleCommentSubmit} alt="댓글 작성 버튼" />
         </F.CommentInputBox>
 
-        {comments.map((comment, index) => (
-          <F.Comment key={index}>
-            <F.CommentInfo>
-              <img src={profile} alt="프로필" />
-              <span>{comment.userId || "익명"}</span>
-              <time>{new Date(comment.createdAt).toLocaleDateString()}</time>
-            </F.CommentInfo>
-            <p>{comment.content}</p>
-          </F.Comment>
+        {comments.map((comment) => (
+          <div key={comment.commentId}>
+            {/* 부모 댓글 */}
+            <F.Comment>
+              <F.CommentInfo>
+                <img src={profile} alt="프로필" />
+                <span>{comment.userId || "익명"}</span>
+                <time>{comment.createdAt && comment.createdAt !== "null" ? new Date(comment.createdAt).toLocaleDateString() : "날짜 없음"}</time>
+              </F.CommentInfo>
+              <p>{comment.content}</p>
+            </F.Comment>
+
+            {/* 🔹 대댓글 자동 렌더링 */}
+            {comment.replyList?.length > 0 && (
+              <div style={{ marginLeft: "30px", borderLeft: "2px solid #ddd", paddingLeft: "10px" }}>
+                {comment.replyList.map((reply) => (
+                  <F.Reply key={reply.commentId}>
+                    <F.CommentInfo>
+                      <img src={profile} alt="프로필" />
+                      <span>{reply.userId || "익명"}</span>
+                      <time>{comment.createdAt && comment.createdAt !== "null" ? new Date(comment.createdAt).toLocaleDateString() : "날짜 없음"}</time>
+                    </F.CommentInfo>
+                    <p>{reply.content}</p>
+                  </F.Reply>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </F.CommentBox>
     </F.Container>
