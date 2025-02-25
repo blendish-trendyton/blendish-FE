@@ -230,6 +230,7 @@ const FoodDetail = () => {
       console.error("스크랩 처리 실패:", error.message);
     }
   };
+
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
 
@@ -247,22 +248,22 @@ const FoodDetail = () => {
       content: newComment, // String 타입
     };
 
-    console.log("전송할 데이터:", requestBody);
+    console.log("전송할 댓글 데이터:", requestBody);
 
     try {
       const response = await fetch("https://junyeongan.store/api/Comment/InsertComment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // JWT 토큰 포함
         },
-        body: JSON.stringify(requestBody), // 🔹 JSON 객체로 변환하여 전송
+        body: JSON.stringify(requestBody), // JSON 객체로 변환하여 전송
       });
 
       console.log("서버 응답 상태 코드:", response.status);
 
       if (response.status === 403) {
-        console.error(" 403 오류 발생: 인증이 필요합니다.");
+        console.error("403 오류 발생: 인증이 필요합니다.");
         localStorage.removeItem("user_token");
         alert("세션이 만료되었습니다. 다시 로그인해주세요.");
         navigate("/login");
@@ -270,22 +271,22 @@ const FoodDetail = () => {
       }
 
       if (!response.ok) {
-        throw new Error(` HTTP 오류! 상태 코드: ${response.status}`);
+        throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
       }
 
       const result = await response.json();
       console.log("댓글 추가 API 응답:", result);
 
       if (result.status === 200) {
-        // UI에서 새로운 댓글 추가
+        // **댓글 리스트에 즉시 추가 (UI 업데이트)**
         setComments((prevComments) => [
           {
-            commentId: prevComments.length + 1, // 임시 ID (서버에서 실제 ID 부여됨)
-            userId: payload.username, // JWT 토큰에서 username 가져오기
-            profilePic: null, // 프로필 이미지 없을 경우 null 처리
+            commentId: Date.now(), // 임시 ID (실제 ID는 서버에서 부여됨)
+            userId: payload.username, // JWT에서 가져온 사용자 이름
+            profilePic: null, // 기본 프로필 이미지
             content: newComment,
             createdAt: new Date().toISOString().split("T")[0], // YYYY-MM-DD 형식
-            numOfReply: 0,
+            replyList: [], // 대댓글 없는 상태로 초기화
           },
           ...prevComments, // 기존 댓글 유지
         ]);

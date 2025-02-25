@@ -24,13 +24,13 @@ const CommentMore = () => {
     }
   }, [token, navigate]);
 
-  // 댓글 불러오기
+  // 전체 댓글 및 대댓글 불러오기
   useEffect(() => {
     const fetchComments = async () => {
       if (!token || !recipeId) return;
 
       try {
-        const response = await fetch(`https://junyeongan.store/api/Comment/ParentsComment?recipeId=${recipeId}`, {
+        const response = await fetch(`https://junyeongan.store/api/Comment/AllComment?recipeId=${recipeId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const CommentMore = () => {
         }
 
         const result = await response.json();
-        console.log("📝 댓글 API 응답:", result);
+        console.log("📝 전체 댓글 API 응답:", result);
 
         if (result.status === 200 && Array.isArray(result.data)) {
           setComments(result.data);
@@ -51,7 +51,7 @@ const CommentMore = () => {
           setErrorMessage("댓글 데이터를 불러올 수 없습니다.");
         }
       } catch (error) {
-        console.error("❌ 댓글 불러오기 실패:", error.message);
+        console.error("❌ 전체 댓글 불러오기 실패:", error.message);
         setErrorMessage("서버 오류가 발생했습니다.");
       }
     };
@@ -59,15 +59,15 @@ const CommentMore = () => {
     fetchComments();
   }, [recipeId, token]);
 
-  // 댓글 전송 함수 (JSON 데이터 타입 변환)
+  // 댓글 전송 함수
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return; // 빈 댓글 방지
 
-    // JSON 데이터 타입 변환 (recipeId: Long, parentCommentId: Long)
+    // JSON 데이터 타입 변환
     const requestBody = {
-      recipeId: Number(recipeId), // recipeId를 숫자로 변환하여 전송
-      parentCommentId: 0, // 최상위 댓글일 경우 0 (null을 허용하지 않는 경우 대비)
-      content: newComment.trim(), // 공백 제거
+      recipeId: Number(recipeId),
+      parentCommentId: null, // 부모 댓글 (대댓글 아님)
+      content: newComment.trim(),
     };
 
     console.log("요청 바디:", JSON.stringify(requestBody));
@@ -95,19 +95,19 @@ const CommentMore = () => {
         // 새로운 댓글을 리스트에 추가
         setComments((prevComments) => [
           {
-            commentId: prevComments.length + 1, // 임시 ID 할당
+            commentId: prevComments.length + 1,
             userId: "현재 사용자",
-            profilePic: null, // 사용자 프로필 추가 가능
+            profilePic: null,
             content: newComment,
             createdAt: new Date().toISOString().split("T")[0],
-            numOfReply: 0,
+            replyList: [],
           },
           ...prevComments,
         ]);
         setNewComment(""); // 입력 필드 초기화
       }
     } catch (error) {
-      console.error(" 댓글 작성 실패:", error.message);
+      console.error("댓글 작성 실패:", error.message);
     }
   };
 
@@ -134,14 +134,33 @@ const CommentMore = () => {
           <F.CommentBox>
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <F.Comment key={comment.commentId}>
-                  <F.CommentInfo>
-                    <img src={comment.profilePic || profile} alt="프로필" />
-                    <span>{comment.userId || "익명"}</span>
-                    <time>{comment.createdAt}</time>
-                  </F.CommentInfo>
-                  <p>{comment.content}</p>
-                </F.Comment>
+                <div key={comment.commentId}>
+                  {/* 부모 댓글 */}
+                  <F.Comment>
+                    <F.CommentInfo>
+                      <img src={comment.profilePic || profile} alt="프로필" />
+                      <span>{comment.userId || "익명"}</span>
+                      <time>{comment.createdAt}</time>
+                    </F.CommentInfo>
+                    <p>{comment.content}</p>
+                  </F.Comment>
+
+                  {/* 🔹 대댓글 렌더링 */}
+                  {comment.replyList && comment.replyList.length > 0 && (
+                    <div style={{ marginLeft: "30px", borderLeft: "2px solid #ddd", paddingLeft: "10px" }}>
+                      {comment.replyList.map((reply) => (
+                        <F.Reply key={reply.commentId}>
+                          <F.CommentInfo>
+                            <img src={reply.profilePic || profile} alt="프로필" />
+                            <span>{reply.userId || "익명"}</span>
+                            <time>{reply.createdAt}</time>
+                          </F.CommentInfo>
+                          <p>{reply.content}</p>
+                        </F.Reply>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))
             ) : (
               <p style={{ textAlign: "center", marginTop: "20px" }}>댓글이 없습니다.</p>
